@@ -1,0 +1,3093 @@
+
+╔════════════════════════════════════════════════════════════════╗
+║     HYPERBOT V4.1 — THE ORDER FLOW SCALPER                    ║
+║   VWAP + CVD | Micro-Squeeze Exits                            ║
+║   ⚠  NO REAL ORDERS — READ-ONLY MARKET DATA  ⚠               ║
+╚════════════════════════════════════════════════════════════════╝
+
+[19:20:21] [BOOT] Balance: $1000.00 USDC | Risk: 2% | Leverage cap: 3x
+[19:20:21] [BOOT] VWAP proximity: 0.1% | CVD spike: 2x baseline
+[19:20:21] [BOOT] Hard stop: 0.5% | Trail at +0.5%
+[19:20:21] [BOOT] Micro-Squeeze: Init 0.15% → Tight 0.08% (5m) → Kill 0.03% (10m)
+[19:20:21] [BOOT] Cooldown: 5m | Equity floor: $80 | Oracle: REMOVED (v4.1)
+[19:20:21] [BOOT] Logging to: sim_log_2026-06-18.txt
+
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62695
+[19:20:22] [REF] SMA200: $62637.84 | RSI: 57.0 | ATR: $27.29
+[Data] Fetching 200x 1h candles for BTC...
+[Data] Loaded 200 1h candles. Latest close: $62695
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62695
+[Macro] 🔴 1H: BEARISH (Close: $62695.00 | SMA: $64714.84) | 1D: BEARISH
+[Funding] ➡️ Rate: -0.000003 | Annualized: -2.55% | Direction: NEUTRAL
+
+[19:20:23] [BOOT] Connecting to market data feed...
+[19:20:23] [BOOT] V4.1 Order Flow Scalper initialized (Oracle removed). Ctrl+C for final report.
+
+[Pipeline] Connected to Hyperliquid L1 (READ-ONLY). Subscribing to streams...
+[Pipeline] Initial book snapshot received. Feed is LIVE.
+
+[19:20:24] ─── MARKET SCAN (tick #1) ───────────────────────────
+         Price:    $62694.50  |  Spread: $1.00
+         VWAP:     $N/A  (?% ???)
+         CVD 60s:  +0.00 BTC  |  Spike 5s: +0.00 (0.0 vol)
+         Volume:   Buy 0.00 / Sell 0.00  |  S/B: 0.00
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: FLAT
+         Balance:  $1000.00  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$0.00 (+0.0%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Risk] Leverage cap applied: 3x max → 0.048 BTC
+[Risk] Equity: $1000.00 | Risk: $20.00 | Size: 0.047 BTC ($2947) | Lev: 2.9x
+
+[19:20:35] ┌─── ENTRY — VWAP BOUNCE BUY (LONG) ──────────────────────────────────────────
+[19:20:35] │ ✓ VWAP: $62694.06 | Price: $62694.50 | Dist: 0.001%
+[19:20:35] │ ✓ CVD Spike: 0.31 BTC in 5s | Ratio: 12.0x baseline
+[19:20:35] │ ✓ CVD 60s: 0.31 | Direction: BUY PRESSURE
+[19:20:35] │ ✓ Volume in spike: 0.32 BTC
+[19:20:35] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:20:35] │ ✓ Size: 0.047 BTC ($2947 USDC)
+[19:20:35] │ Action: OPEN LONG 0.047 BTC @ ~$62694.50
+[19:20:35] │ Hard stop: $62653.57 (0.1%) | Trail at +0.5%
+[19:20:35] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:20:35] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62695.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.047 BTC @ $62695.00 | Fee: $1.3260 | PnL: $0.00 | Balance: $998.67
+
+[19:20:39] ─── MARKET SCAN (tick #8) ───────────────────────────
+         Price:    $62694.50  |  Spread: $1.00
+         VWAP:     $62694.16  (0.001% ABOVE ↑)
+         CVD 60s:  +0.27 BTC  |  Spike 5s: +0.27 (0.5 vol)
+         Volume:   Buy 0.37 / Sell 0.10  |  S/B: 0.26
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $-0.02 | Hold: 4s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:$-0.02 (4s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:20:56] ─── MARKET SCAN (tick #16) ───────────────────────────
+         Price:    $62709.50  |  Spread: $1.00
+         VWAP:     $62706.94  (0.004% ABOVE ↑)
+         CVD 60s:  +2.88 BTC  |  Spike 5s: +2.88 (3.1 vol)
+         Volume:   Buy 3.00 / Sell 0.12  |  S/B: 0.04
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.68 | Hold: 21s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.68 (21s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:21:11] ─── MARKET SCAN (tick #23) ───────────────────────────
+         Price:    $62720.50  |  Spread: $1.00
+         VWAP:     $62707.81  (0.020% ABOVE ↑)
+         CVD 60s:  +3.21 BTC  |  Spike 5s: +2.95 (3.2 vol)
+         Volume:   Buy 3.34 / Sell 0.13  |  S/B: 0.04
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.20 | Hold: 36s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.20 (36s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:21:26] ─── MARKET SCAN (tick #30) ───────────────────────────
+         Price:    $62704.50  |  Spread: $1.00
+         VWAP:     $62713.59  (-0.014% BELOW ↓)
+         CVD 60s:  +5.84 BTC  |  Spike 5s: +5.45 (6.5 vol)
+         Volume:   Buy 6.47 / Sell 0.64  |  S/B: 0.10
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.45 | Hold: 51s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.45 (51s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:21:42] ─── MARKET SCAN (tick #37) ───────────────────────────
+         Price:    $62704.50  |  Spread: $1.00
+         VWAP:     $62713.39  (-0.014% BELOW ↓)
+         CVD 60s:  +5.88 BTC  |  Spike 5s: +2.98 (4.1 vol)
+         Volume:   Buy 6.58 / Sell 0.69  |  S/B: 0.11
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.45 | Hold: 1m 7s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.45 (1m 7s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:21:59] ─── MARKET SCAN (tick #45) ───────────────────────────
+         Price:    $62714.50  |  Spread: $1.00
+         VWAP:     $62713.87  (0.001% ABOVE ↑)
+         CVD 60s:  +8.33 BTC  |  Spike 5s: +2.48 (4.2 vol)
+         Volume:   Buy 9.74 / Sell 1.41  |  S/B: 0.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.92 | Hold: 1m 24s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.92 (1m 24s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:22:14] ─── MARKET SCAN (tick #52) ───────────────────────────
+         Price:    $62714.50  |  Spread: $1.00
+         VWAP:     $62713.90  (0.001% ABOVE ↑)
+         CVD 60s:  +8.24 BTC  |  Spike 5s: +2.70 (4.4 vol)
+         Volume:   Buy 9.71 / Sell 1.47  |  S/B: 0.15
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.92 | Hold: 1m 39s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.92 (1m 39s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:22:29] ─── MARKET SCAN (tick #59) ───────────────────────────
+         Price:    $62741.50  |  Spread: $1.00
+         VWAP:     $62714.92  (0.042% ABOVE ↑)
+         CVD 60s:  +10.68 BTC  |  Spike 5s: +5.81 (6.2 vol)
+         Volume:   Buy 12.13 / Sell 1.45  |  S/B: 0.12
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.19 | Hold: 1m 54s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.19 (1m 54s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:22:44] ─── MARKET SCAN (tick #66) ───────────────────────────
+         Price:    $62751.50  |  Spread: $1.00
+         VWAP:     $62725.39  (0.042% ABOVE ↑)
+         CVD 60s:  +11.77 BTC  |  Spike 5s: +6.41 (7.7 vol)
+         Volume:   Buy 13.78 / Sell 2.00  |  S/B: 0.15
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.66 | Hold: 2m 9s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.66 (2m 9s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:22:59] ─── MARKET SCAN (tick #73) ───────────────────────────
+         Price:    $62750.50  |  Spread: $1.00
+         VWAP:     $62734.60  (0.025% ABOVE ↑)
+         CVD 60s:  +18.94 BTC  |  Spike 5s: +16.25 (18.1 vol)
+         Volume:   Buy 20.80 / Sell 1.86  |  S/B: 0.09
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.61 | Hold: 2m 24s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.61 (2m 24s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:23:14] ─── MARKET SCAN (tick #80) ───────────────────────────
+         Price:    $62744.50  |  Spread: $1.00
+         VWAP:     $62735.04  (0.015% ABOVE ↑)
+         CVD 60s:  +19.79 BTC  |  Spike 5s: +13.31 (15.4 vol)
+         Volume:   Buy 21.74 / Sell 1.95  |  S/B: 0.09
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.33 | Hold: 2m 39s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.33 (2m 39s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:23:31] ─── MARKET SCAN (tick #88) ───────────────────────────
+         Price:    $62726.50  |  Spread: $1.00
+         VWAP:     $62735.21  (-0.014% BELOW ↓)
+         CVD 60s:  +17.88 BTC  |  Spike 5s: +1.46 (2.0 vol)
+         Volume:   Buy 19.18 / Sell 1.30  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.48 | Hold: 2m 56s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.48 (2m 56s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:23:47] ─── MARKET SCAN (tick #95) ───────────────────────────
+         Price:    $62720.50  |  Spread: $1.00
+         VWAP:     $62735.10  (-0.023% BELOW ↓)
+         CVD 60s:  +17.89 BTC  |  Spike 5s: +1.60 (2.0 vol)
+         Volume:   Buy 19.17 / Sell 1.28  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.20 | Hold: 3m 11s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.20 (3m 11s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:24:02] ─── MARKET SCAN (tick #102) ───────────────────────────
+         Price:    $62727.50  |  Spread: $13.00
+         VWAP:     $62734.99  (-0.012% BELOW ↓)
+         CVD 60s:  +15.17 BTC  |  Spike 5s: +0.03 (1.9 vol)
+         Volume:   Buy 17.20 / Sell 2.03  |  S/B: 0.12
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.53 | Hold: 3m 27s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.53 (3m 27s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:24:17] ─── MARKET SCAN (tick #109) ───────────────────────────
+         Price:    $62713.50  |  Spread: $1.00
+         VWAP:     $62733.71  (-0.032% BELOW ↓)
+         CVD 60s:  +10.30 BTC  |  Spike 5s: -1.98 (4.1 vol)
+         Volume:   Buy 13.98 / Sell 3.67  |  S/B: 0.26
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.87 | Hold: 3m 42s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.87 (3m 42s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:24:32] ─── MARKET SCAN (tick #116) ───────────────────────────
+         Price:    $62709.50  |  Spread: $1.00
+         VWAP:     $62733.55  (-0.038% BELOW ↓)
+         CVD 60s:  -0.65 BTC  |  Spike 5s: -2.25 (4.0 vol)
+         Volume:   Buy 2.86 / Sell 3.51  |  S/B: 1.23
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.68 | Hold: 3m 57s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.68 (3m 57s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:24:47] ─── MARKET SCAN (tick #123) ───────────────────────────
+         Price:    $62713.50  |  Spread: $1.00
+         VWAP:     $62733.34  (-0.032% BELOW ↓)
+         CVD 60s:  -1.18 BTC  |  Spike 5s: +0.09 (0.8 vol)
+         Volume:   Buy 2.26 / Sell 3.44  |  S/B: 1.52
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $0.87 | Hold: 4m 12s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$0.87 (4m 12s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:25:03] ─── MARKET SCAN (tick #130) ───────────────────────────
+         Price:    $62719.50  |  Spread: $1.00
+         VWAP:     $62731.32  (-0.019% BELOW ↓)
+         CVD 60s:  +3.13 BTC  |  Spike 5s: +5.24 (5.6 vol)
+         Volume:   Buy 6.59 / Sell 3.46  |  S/B: 0.53
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.15 | Hold: 4m 28s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.15 (4m 28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:25:18] ─── MARKET SCAN (tick #137) ───────────────────────────
+         Price:    $62719.50  |  Spread: $1.00
+         VWAP:     $62731.14  (-0.019% BELOW ↓)
+         CVD 60s:  +2.94 BTC  |  Spike 5s: +5.00 (6.1 vol)
+         Volume:   Buy 6.69 / Sell 3.75  |  S/B: 0.56
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62637.84 | RSI 57.0 | ATR $27.29
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $1.15 | Hold: 4m 43s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$1.15 (4m 43s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 5m 2s           | Ticks: 139                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 0     | Wins: 0     | Losses: 0                  │
+│ Win Rate:       N/A                                        │
+│ Profit Factor:  N/A                                        │
+│ Sharpe Ratio:   N/A (need 2+ trades)                       │
+│ Sortino Ratio:  N/A (need 2+ trades)                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.00         | Avg Loss: $0.00            │
+│ Best:     $0.00         | Worst:    $0.00            │
+│ Total Fees Paid: $0.0000                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $998.67                                     │
+│ Realized PnL:  $-1.33 (-0.13%)                               │
+│ Unrealized:    $1.18                                       │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+├──────────────────────────────────────────────────────────────┤
+│ Open: LONG 0.047 BTC @ $62695.00                             │
+│ Mark:  $62720.00     | Unrealized: $1.18             │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1h candles. Latest close: $62719
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62719
+[19:25:24] [Refresh] SMA200: $62642.07 | RSI: 69.9 | ATR: $29.07
+[Data] Loaded 200 1d candles. Latest close: $62720
+[Macro] 🔴 1H: BEARISH (Close: $62719.00 | SMA: $64715.32) | 1D: BEARISH
+
+[19:25:33] ─── MARKET SCAN (tick #144) ───────────────────────────
+         Price:    $62749.50  |  Spread: $1.00
+         VWAP:     $62730.94  (0.030% ABOVE ↑)
+         CVD 60s:  +3.01 BTC  |  Spike 5s: +0.44 (1.7 vol)
+         Volume:   Buy 6.72 / Sell 3.71  |  S/B: 0.55
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.56 | Hold: 4m 58s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.56 (4m 58s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:25:48] ─── MARKET SCAN (tick #151) ───────────────────────────
+         Price:    $62772.50  |  Spread: $1.00
+         VWAP:     $62759.57  (0.021% ABOVE ↑)
+         CVD 60s:  +156.08 BTC  |  Spike 5s: +151.05 (152.5 vol)
+         Volume:   Buy 157.26 / Sell 1.19  |  S/B: 0.01
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.64 | Hold: 5m 13s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.64 (5m 13s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:26:03] ─── MARKET SCAN (tick #158) ───────────────────────────
+         Price:    $62772.50  |  Spread: $1.00
+         VWAP:     $62759.86  (0.020% ABOVE ↑)
+         CVD 60s:  +160.18 BTC  |  Spike 5s: +155.20 (156.2 vol)
+         Volume:   Buy 161.35 / Sell 1.16  |  S/B: 0.01
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.64 | Hold: 5m 28s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.64 (5m 28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:26:20] ─── MARKET SCAN (tick #166) ───────────────────────────
+         Price:    $62770.50  |  Spread: $1.00
+         VWAP:     $62759.97  (0.017% ABOVE ↑)
+         CVD 60s:  +161.24 BTC  |  Spike 5s: +83.75 (85.0 vol)
+         Volume:   Buy 162.65 / Sell 1.41  |  S/B: 0.01
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.55 | Hold: 5m 45s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.55 (5m 45s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:26:36] ─── MARKET SCAN (tick #173) ───────────────────────────
+         Price:    $62768.50  |  Spread: $1.00
+         VWAP:     $62760.03  (0.013% ABOVE ↑)
+         CVD 60s:  +155.09 BTC  |  Spike 5s: +0.14 (3.4 vol)
+         Volume:   Buy 157.62 / Sell 2.52  |  S/B: 0.02
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.45 | Hold: 6m 1s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.45 (6m 1s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:26:51] ─── MARKET SCAN (tick #180) ───────────────────────────
+         Price:    $62768.50  |  Spread: $1.00
+         VWAP:     $62760.08  (0.013% ABOVE ↑)
+         CVD 60s:  +155.07 BTC  |  Spike 5s: +0.20 (4.2 vol)
+         Volume:   Buy 157.96 / Sell 2.88  |  S/B: 0.02
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.45 | Hold: 6m 16s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.45 (6m 16s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:27:08] ─── MARKET SCAN (tick #188) ───────────────────────────
+         Price:    $62768.50  |  Spread: $1.00
+         VWAP:     $62760.09  (0.013% ABOVE ↑)
+         CVD 60s:  +154.31 BTC  |  Spike 5s: -1.38 (2.6 vol)
+         Volume:   Buy 157.11 / Sell 2.80  |  S/B: 0.02
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.45 | Hold: 6m 33s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.45 (6m 33s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:27:23] ─── MARKET SCAN (tick #195) ───────────────────────────
+         Price:    $62764.50  |  Spread: $1.00
+         VWAP:     $62760.12  (0.007% ABOVE ↑)
+         CVD 60s:  +4.48 BTC  |  Spike 5s: -0.03 (2.0 vol)
+         Volume:   Buy 7.23 / Sell 2.75  |  S/B: 0.38
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.27 | Hold: 6m 48s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.27 (6m 48s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:27:38] ─── MARKET SCAN (tick #202) ───────────────────────────
+         Price:    $62754.50  |  Spread: $1.00
+         VWAP:     $62760.23  (-0.009% BELOW ↓)
+         CVD 60s:  +5.62 BTC  |  Spike 5s: +5.57 (7.2 vol)
+         Volume:   Buy 8.64 / Sell 3.02  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.80 | Hold: 7m 3s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.80 (7m 3s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:27:53] ─── MARKET SCAN (tick #209) ───────────────────────────
+         Price:    $62776.50  |  Spread: $1.00
+         VWAP:     $62760.26  (0.026% ABOVE ↑)
+         CVD 60s:  +5.01 BTC  |  Spike 5s: +5.48 (7.2 vol)
+         Volume:   Buy 8.07 / Sell 3.06  |  S/B: 0.38
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.83 | Hold: 7m 18s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.83 (7m 18s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:28:08] ─── MARKET SCAN (tick #216) ───────────────────────────
+         Price:    $62776.50  |  Spread: $1.00
+         VWAP:     $62760.40  (0.026% ABOVE ↑)
+         CVD 60s:  +6.88 BTC  |  Spike 5s: +1.26 (2.9 vol)
+         Volume:   Buy 8.82 / Sell 1.93  |  S/B: 0.22
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.83 | Hold: 7m 33s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.83 (7m 33s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:28:25] ─── MARKET SCAN (tick #224) ───────────────────────────
+         Price:    $62744.50  |  Spread: $1.00
+         VWAP:     $62760.40  (-0.025% BELOW ↓)
+         CVD 60s:  +7.13 BTC  |  Spike 5s: +1.70 (2.3 vol)
+         Volume:   Buy 8.55 / Sell 1.41  |  S/B: 0.17
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.33 | Hold: 7m 50s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.33 (7m 50s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:28:40] ─── MARKET SCAN (tick #231) ───────────────────────────
+         Price:    $62754.50  |  Spread: $1.00
+         VWAP:     $62760.37  (-0.009% BELOW ↓)
+         CVD 60s:  +6.59 BTC  |  Spike 5s: +1.05 (3.2 vol)
+         Volume:   Buy 8.68 / Sell 2.09  |  S/B: 0.24
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.80 | Hold: 8m 5s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.80 (8m 5s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:28:56] ─── MARKET SCAN (tick #238) ───────────────────────────
+         Price:    $62744.50  |  Spread: $1.00
+         VWAP:     $62760.26  (-0.025% BELOW ↓)
+         CVD 60s:  +7.67 BTC  |  Spike 5s: +1.09 (3.0 vol)
+         Volume:   Buy 9.60 / Sell 1.93  |  S/B: 0.20
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.33 | Hold: 8m 21s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.33 (8m 21s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:29:11] ─── MARKET SCAN (tick #245) ───────────────────────────
+         Price:    $62737.50  |  Spread: $1.00
+         VWAP:     $62760.22  (-0.036% BELOW ↓)
+         CVD 60s:  +2.04 BTC  |  Spike 5s: +0.85 (3.1 vol)
+         Volume:   Buy 4.15 / Sell 2.11  |  S/B: 0.51
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.00 | Hold: 8m 36s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.00 (8m 36s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:29:28] ─── MARKET SCAN (tick #253) ───────────────────────────
+         Price:    $62757.50  |  Spread: $1.00
+         VWAP:     $62760.20  (-0.004% BELOW ↓)
+         CVD 60s:  +2.85 BTC  |  Spike 5s: +1.64 (2.5 vol)
+         Volume:   Buy 4.42 / Sell 1.57  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.94 | Hold: 8m 53s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.94 (8m 53s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:29:43] ─── MARKET SCAN (tick #260) ───────────────────────────
+         Price:    $62753.50  |  Spread: $1.00
+         VWAP:     $62760.19  (-0.011% BELOW ↓)
+         CVD 60s:  +2.94 BTC  |  Spike 5s: +0.49 (1.0 vol)
+         Volume:   Buy 4.52 / Sell 1.58  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.75 | Hold: 9m 8s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.75 (9m 8s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:29:58] ─── MARKET SCAN (tick #267) ───────────────────────────
+         Price:    $62741.50  |  Spread: $1.00
+         VWAP:     $62760.18  (-0.030% BELOW ↓)
+         CVD 60s:  +1.58 BTC  |  Spike 5s: +0.46 (1.1 vol)
+         Volume:   Buy 3.02 / Sell 1.44  |  S/B: 0.48
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.19 | Hold: 9m 23s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.19 (9m 23s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:30:13] ─── MARKET SCAN (tick #274) ───────────────────────────
+         Price:    $62747.50  |  Spread: $1.00
+         VWAP:     $62760.11  (-0.020% BELOW ↓)
+         CVD 60s:  +1.73 BTC  |  Spike 5s: -0.01 (1.4 vol)
+         Volume:   Buy 2.98 / Sell 1.25  |  S/B: 0.42
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62642.07 | RSI 69.9 | ATR $29.07
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $2.47 | Hold: 9m 38s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$2.47 (9m 38s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 10m 2s          | Ticks: 278                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 0     | Wins: 0     | Losses: 0                  │
+│ Win Rate:       N/A                                        │
+│ Profit Factor:  N/A                                        │
+│ Sharpe Ratio:   N/A (need 2+ trades)                       │
+│ Sortino Ratio:  N/A (need 2+ trades)                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.00         | Avg Loss: $0.00            │
+│ Best:     $0.00         | Worst:    $0.00            │
+│ Total Fees Paid: $0.0000                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $998.67                                     │
+│ Realized PnL:  $-1.33 (-0.13%)                               │
+│ Unrealized:    $3.24                                       │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+├──────────────────────────────────────────────────────────────┤
+│ Open: LONG 0.047 BTC @ $62695.00                             │
+│ Mark:  $62764.00     | Unrealized: $3.24             │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1h candles. Latest close: $62764
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62764
+[19:30:24] [Refresh] SMA200: $62645.36 | RSI: 67.6 | ATR: $31.93
+[Data] Loaded 200 1d candles. Latest close: $62764
+[Macro] 🔴 1H: BEARISH (Close: $62764.00 | SMA: $64716.22) | 1D: BEARISH
+
+[19:30:31] ─── MARKET SCAN (tick #282) ───────────────────────────
+         Price:    $62769.50  |  Spread: $1.00
+         VWAP:     $62760.11  (0.015% ABOVE ↑)
+         CVD 60s:  +1.00 BTC  |  Spike 5s: +0.51 (2.0 vol)
+         Volume:   Buy 2.24 / Sell 1.25  |  S/B: 0.56
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.50 | Hold: 9m 56s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62653.57 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.50 (9m 56s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:30:35] ┌─── KILL SWITCH — FORCED TRAIL ──────────────────────────────────────────
+[19:30:35] │ ⏰ 10m 0s without trail. Suffocating with 0.03% CB
+[19:30:35] │ Stop: $62750.67
+[19:30:35] └──────────────────────────────────────────────────────────
+
+[19:30:46] ─── MARKET SCAN (tick #289) ───────────────────────────
+         Price:    $62769.50  |  Spread: $1.00
+         VWAP:     $62760.12  (0.015% ABOVE ↑)
+         CVD 60s:  +1.30 BTC  |  Spike 5s: +0.65 (2.1 vol)
+         Volume:   Buy 2.35 / Sell 1.05  |  S/B: 0.45
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.50 | Hold: 10m 11s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62750.67 (TRAIL)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.50 (10m 11s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:31:03] ─── MARKET SCAN (tick #297) ───────────────────────────
+         Price:    $62777.50  |  Spread: $1.00
+         VWAP:     $62760.20  (0.028% ABOVE ↑)
+         CVD 60s:  +2.32 BTC  |  Spike 5s: +1.77 (2.0 vol)
+         Volume:   Buy 3.41 / Sell 1.09  |  S/B: 0.32
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $3.88 | Hold: 10m 28s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62758.67 (TRAIL)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$3.88 (10m 28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:31:20] ─── MARKET SCAN (tick #305) ───────────────────────────
+         Price:    $62786.50  |  Spread: $1.00
+         VWAP:     $62760.30  (0.042% ABOVE ↑)
+         CVD 60s:  +2.94 BTC  |  Spike 5s: +2.20 (2.4 vol)
+         Volume:   Buy 3.82 / Sell 0.88  |  S/B: 0.23
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $4.30 | Hold: 10m 45s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62767.66 (TRAIL)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$4.30 (10m 45s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:31:37] ─── MARKET SCAN (tick #313) ───────────────────────────
+         Price:    $62795.50  |  Spread: $1.00
+         VWAP:     $62760.35  (0.056% ABOVE ↑)
+         CVD 60s:  +3.13 BTC  |  Spike 5s: +2.33 (2.5 vol)
+         Volume:   Buy 3.99 / Sell 0.85  |  S/B: 0.21
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $4.72 | Hold: 11m 2s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62776.66 (TRAIL)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$4.72 (11m 2s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:31:55] ─── MARKET SCAN (tick #321) ───────────────────────────
+         Price:    $62782.50  |  Spread: $1.00
+         VWAP:     $62760.58  (0.035% ABOVE ↑)
+         CVD 60s:  +4.47 BTC  |  Spike 5s: +2.20 (2.4 vol)
+         Volume:   Buy 4.72 / Sell 0.25  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62695.00 | uPnL: $4.11 | Hold: 11m 20s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62776.66 (TRAIL)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62695 uPnL:+$4.11 (11m 20s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:31:59] ┌─── TRAIL STOP — KILL_SWITCH ──────────────────────────────────────────
+[19:31:59] │ 📉 Price $62771.50 breached trail $62776.66
+[19:31:59] │ PnL: $3.60 | Phase: KILL_SWITCH (11m 24s) | CB: 0.03%
+[19:31:59] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62771.00 | Slippage: $0.00 / BTC
+[Ledger] SELL 0.047 BTC @ $62771.00 | Fee: $1.3276 | PnL: $3.57 | Balance: $1000.92
+
+[19:32:01] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:32:01] │ LONG 0.047 BTC | VWAP_BOUNCE
+[19:32:01] │ $62695.00 → $62771.00 | TRAIL_KILL_SWITCH | 11m 24s
+[19:32:01] │ Gross: $3.57 | Fees: $2.6536 | Net: $0.92 ✅
+[19:32:01] │ Balance: $1000.92 | W:1 L:0 (100%)
+[19:32:01] └──────────────────────────────────────────────────────────
+
+[19:32:10] ─── MARKET SCAN (tick #328) ───────────────────────────
+         Price:    $62762.50  |  Spread: $1.00
+         VWAP:     $62760.94  (0.002% ABOVE ↑)
+         CVD 60s:  -0.81 BTC  |  Spike 5s: -3.01 (8.8 vol)
+         Volume:   Buy 5.22 / Sell 6.02  |  S/B: 1.15
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: FLAT
+         Balance:  $1000.92  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$0.92 (+0.1%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:32:27] ─── MARKET SCAN (tick #336) ───────────────────────────
+         Price:    $62768.50  |  Spread: $1.00
+         VWAP:     $62760.94  (0.012% ABOVE ↑)
+         CVD 60s:  -0.75 BTC  |  Spike 5s: -4.25 (7.5 vol)
+         Volume:   Buy 5.27 / Sell 6.02  |  S/B: 1.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: FLAT
+         Balance:  $1000.92  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$0.92 (+0.1%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:32:44] ─── MARKET SCAN (tick #344) ───────────────────────────
+         Price:    $62802.50  |  Spread: $1.00
+         VWAP:     $62761.40  (0.065% ABOVE ↑)
+         CVD 60s:  -1.89 BTC  |  Spike 5s: -0.26 (3.8 vol)
+         Volume:   Buy 5.25 / Sell 7.14  |  S/B: 1.36
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: FLAT
+         Balance:  $1000.92  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$0.92 (+0.1%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Risk] Leverage cap applied: 3x max → 0.048 BTC
+[Risk] Equity: $1000.92 | Risk: $20.02 | Size: 0.047 BTC ($2952) | Lev: 2.9x
+
+[19:32:48] ┌─── ENTRY — VWAP BOUNCE BUY (LONG) ──────────────────────────────────────────
+[19:32:48] │ ✓ VWAP: $62761.46 | Price: $62805.50 | Dist: 0.070%
+[19:32:48] │ ✓ CVD Spike: 0.83 BTC in 5s | Ratio: 5.7x baseline
+[19:32:48] │ ✓ CVD 60s: -1.74 | Direction: BUY PRESSURE
+[19:32:48] │ ✓ Volume in spike: 3.31 BTC
+[19:32:48] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:32:48] │ ✓ Size: 0.047 BTC ($2952 USDC)
+[19:32:48] │ Action: OPEN LONG 0.047 BTC @ ~$62805.50
+[19:32:48] │ Hard stop: $62757.61 (0.1%) | Trail at +0.5%
+[19:32:48] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:32:48] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62806.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.047 BTC @ $62806.00 | Fee: $1.3283 | PnL: $0.00 | Balance: $999.59
+
+[19:33:01] ─── MARKET SCAN (tick #352) ───────────────────────────
+         Price:    $62805.50  |  Spread: $1.00
+         VWAP:     $62762.40  (0.069% ABOVE ↑)
+         CVD 60s:  -6.83 BTC  |  Spike 5s: -3.95 (8.7 vol)
+         Volume:   Buy 5.38 / Sell 12.21  |  S/B: 2.27
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.02 | Hold: 12s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.02 (12s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:33:16] ─── MARKET SCAN (tick #359) ───────────────────────────
+         Price:    $62807.50  |  Spread: $1.00
+         VWAP:     $62764.19  (0.069% ABOVE ↑)
+         CVD 60s:  +2.51 BTC  |  Spike 5s: +6.54 (19.3 vol)
+         Volume:   Buy 14.81 / Sell 12.30  |  S/B: 0.83
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.07 | Hold: 28s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.07 (28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:33:33] ─── MARKET SCAN (tick #367) ───────────────────────────
+         Price:    $62811.50  |  Spread: $1.00
+         VWAP:     $62764.40  (0.075% ABOVE ↑)
+         CVD 60s:  +2.80 BTC  |  Spike 5s: +11.58 (12.0 vol)
+         Volume:   Buy 15.11 / Sell 12.32  |  S/B: 0.81
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.26 | Hold: 45s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.26 (45s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:33:50] ─── MARKET SCAN (tick #375) ───────────────────────────
+         Price:    $62804.50  |  Spread: $1.00
+         VWAP:     $62764.75  (0.063% ABOVE ↑)
+         CVD 60s:  +9.12 BTC  |  Spike 5s: +2.51 (3.1 vol)
+         Volume:   Buy 15.81 / Sell 6.70  |  S/B: 0.42
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.07 | Hold: 1m 2s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.07 (1m 2s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:34:05] ─── MARKET SCAN (tick #382) ───────────────────────────
+         Price:    $62808.50  |  Spread: $1.00
+         VWAP:     $62764.96  (0.069% ABOVE ↑)
+         CVD 60s:  +8.53 BTC  |  Spike 5s: +1.86 (3.9 vol)
+         Volume:   Buy 16.04 / Sell 7.51  |  S/B: 0.47
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.12 | Hold: 1m 17s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.12 (1m 17s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:34:21] ─── MARKET SCAN (tick #389) ───────────────────────────
+         Price:    $62801.50  |  Spread: $1.00
+         VWAP:     $62765.18  (0.058% ABOVE ↑)
+         CVD 60s:  +9.41 BTC  |  Spike 5s: +1.15 (3.3 vol)
+         Volume:   Buy 15.79 / Sell 6.38  |  S/B: 0.40
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.21 | Hold: 1m 32s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.21 (1m 32s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:34:36] ─── MARKET SCAN (tick #396) ───────────────────────────
+         Price:    $62772.50  |  Spread: $1.00
+         VWAP:     $62765.60  (0.011% ABOVE ↑)
+         CVD 60s:  +10.86 BTC  |  Spike 5s: -2.24 (5.6 vol)
+         Volume:   Buy 15.18 / Sell 4.32  |  S/B: 0.28
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-1.57 | Hold: 1m 47s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-1.57 (1m 47s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:34:51] ─── MARKET SCAN (tick #403) ───────────────────────────
+         Price:    $62787.50  |  Spread: $1.00
+         VWAP:     $62765.62  (0.035% ABOVE ↑)
+         CVD 60s:  +0.30 BTC  |  Spike 5s: -2.73 (3.8 vol)
+         Volume:   Buy 4.63 / Sell 4.33  |  S/B: 0.94
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.87 | Hold: 2m 2s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.87 (2m 2s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:35:06] ─── MARKET SCAN (tick #410) ───────────────────────────
+         Price:    $62773.50  |  Spread: $1.00
+         VWAP:     $62766.01  (0.012% ABOVE ↑)
+         CVD 60s:  -7.01 BTC  |  Spike 5s: -6.49 (7.5 vol)
+         Volume:   Buy 4.07 / Sell 11.08  |  S/B: 2.72
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-1.53 | Hold: 2m 17s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-1.53 (2m 17s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:35:21] ─── MARKET SCAN (tick #417) ───────────────────────────
+         Price:    $62787.50  |  Spread: $1.00
+         VWAP:     $62766.04  (0.034% ABOVE ↑)
+         CVD 60s:  -8.52 BTC  |  Spike 5s: -6.53 (8.0 vol)
+         Volume:   Buy 2.93 / Sell 11.44  |  S/B: 3.91
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62645.36 | RSI 67.6 | ATR $31.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.87 | Hold: 2m 33s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.87 (2m 33s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 15m 2s          | Ticks: 417                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 1     | Wins: 1     | Losses: 0                  │
+│ Win Rate:       100.0%                                        │
+│ Profit Factor:  ∞                                        │
+│ Sharpe Ratio:   N/A (need 2+ trades)                       │
+│ Sortino Ratio:  N/A (need 2+ trades)                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.92         | Avg Loss: $0.00            │
+│ Best:     $0.92         | Worst:    $0.00            │
+│ Total Fees Paid: $2.6536                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $999.59                                     │
+│ Realized PnL:  $-0.41 (-0.04%)                               │
+│ Unrealized:    $-0.85                                      │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+├──────────────────────────────────────────────────────────────┤
+│ Open: LONG 0.047 BTC @ $62806.00                             │
+│ Mark:  $62788.00     | Unrealized: $-0.85            │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1m candles. Latest close: $62784
+[19:35:24] [Refresh] SMA200: $62649.19 | RSI: 63.0 | ATR: $29.93
+[Data] Loaded 200 1h candles. Latest close: $62784
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62784
+[Macro] 🔴 1H: BEARISH (Close: $62784.00 | SMA: $64716.62) | 1D: BEARISH
+
+[19:35:38] ─── MARKET SCAN (tick #425) ───────────────────────────
+         Price:    $62804.50  |  Spread: $1.00
+         VWAP:     $62766.27  (0.061% ABOVE ↑)
+         CVD 60s:  -10.26 BTC  |  Spike 5s: -8.64 (9.8 vol)
+         Volume:   Buy 2.33 / Sell 12.59  |  S/B: 5.40
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.07 | Hold: 2m 50s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.07 (2m 50s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:35:53] ─── MARKET SCAN (tick #432) ───────────────────────────
+         Price:    $62807.50  |  Spread: $1.00
+         VWAP:     $62766.45  (0.065% ABOVE ↑)
+         CVD 60s:  -11.22 BTC  |  Spike 5s: -1.58 (3.6 vol)
+         Volume:   Buy 1.77 / Sell 12.99  |  S/B: 7.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.07 | Hold: 3m 5s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.07 (3m 5s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:36:09] ─── MARKET SCAN (tick #439) ───────────────────────────
+         Price:    $62788.50  |  Spread: $1.00
+         VWAP:     $62766.76  (0.035% ABOVE ↑)
+         CVD 60s:  -6.25 BTC  |  Spike 5s: +0.28 (6.0 vol)
+         Volume:   Buy 3.98 / Sell 10.23  |  S/B: 2.57
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $-0.82 | Hold: 3m 20s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:$-0.82 (3m 20s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:36:26] ─── MARKET SCAN (tick #447) ───────────────────────────
+         Price:    $62813.50  |  Spread: $1.00
+         VWAP:     $62766.82  (0.074% ABOVE ↑)
+         CVD 60s:  -5.87 BTC  |  Spike 5s: +2.71 (3.3 vol)
+         Volume:   Buy 4.19 / Sell 10.06  |  S/B: 2.40
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.35 | Hold: 3m 38s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.35 (3m 38s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:36:41] ─── MARKET SCAN (tick #454) ───────────────────────────
+         Price:    $62809.50  |  Spread: $1.00
+         VWAP:     $62766.98  (0.068% ABOVE ↑)
+         CVD 60s:  -2.03 BTC  |  Spike 5s: +1.26 (2.5 vol)
+         Volume:   Buy 4.58 / Sell 6.61  |  S/B: 1.44
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.16 | Hold: 3m 53s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.16 (3m 53s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:36:58] ─── MARKET SCAN (tick #462) ───────────────────────────
+         Price:    $62818.50  |  Spread: $1.00
+         VWAP:     $62767.10  (0.082% ABOVE ↑)
+         CVD 60s:  +1.20 BTC  |  Spike 5s: +0.71 (1.9 vol)
+         Volume:   Buy 4.67 / Sell 3.47  |  S/B: 0.74
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.59 | Hold: 4m 10s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.59 (4m 10s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:37:13] ─── MARKET SCAN (tick #469) ───────────────────────────
+         Price:    $62816.50  |  Spread: $1.00
+         VWAP:     $62767.15  (0.079% ABOVE ↑)
+         CVD 60s:  +3.06 BTC  |  Spike 5s: +0.49 (1.9 vol)
+         Volume:   Buy 4.58 / Sell 1.52  |  S/B: 0.33
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.49 | Hold: 4m 25s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.49 (4m 25s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:37:29] ─── MARKET SCAN (tick #476) ───────────────────────────
+         Price:    $62826.50  |  Spread: $1.00
+         VWAP:     $62767.78  (0.094% ABOVE ↑)
+         CVD 60s:  +6.18 BTC  |  Spike 5s: +3.37 (4.1 vol)
+         Volume:   Buy 7.19 / Sell 1.01  |  S/B: 0.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.96 | Hold: 4m 40s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.96 (4m 40s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:37:44] ─── MARKET SCAN (tick #483) ───────────────────────────
+         Price:    $62826.50  |  Spread: $1.00
+         VWAP:     $62767.97  (0.093% ABOVE ↑)
+         CVD 60s:  +5.11 BTC  |  Spike 5s: +4.21 (4.4 vol)
+         Volume:   Buy 5.84 / Sell 0.73  |  S/B: 0.12
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $0.96 | Hold: 4m 55s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$0.96 (4m 55s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:37:59] ─── MARKET SCAN (tick #490) ───────────────────────────
+         Price:    $62835.50  |  Spread: $1.00
+         VWAP:     $62768.29  (0.107% ABOVE ↑)
+         CVD 60s:  +3.69 BTC  |  Spike 5s: +3.15 (5.7 vol)
+         Volume:   Buy 5.67 / Sell 1.98  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $1.39 | Hold: 5m 10s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$1.39 (5m 11s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:38:14] ─── MARKET SCAN (tick #497) ───────────────────────────
+         Price:    $62837.50  |  Spread: $1.00
+         VWAP:     $62769.34  (0.109% ABOVE ↑)
+         CVD 60s:  +6.47 BTC  |  Spike 5s: +2.30 (6.1 vol)
+         Volume:   Buy 8.73 / Sell 2.25  |  S/B: 0.26
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $1.48 | Hold: 5m 26s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$1.48 (5m 26s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:38:30] ─── MARKET SCAN (tick #504) ───────────────────────────
+         Price:    $62833.50  |  Spread: $1.00
+         VWAP:     $62769.48  (0.102% ABOVE ↑)
+         CVD 60s:  +6.07 BTC  |  Spike 5s: +1.90 (6.4 vol)
+         Volume:   Buy 8.69 / Sell 2.62  |  S/B: 0.30
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $1.29 | Hold: 5m 41s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$1.29 (5m 41s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:38:45] ─── MARKET SCAN (tick #511) ───────────────────────────
+         Price:    $62828.50  |  Spread: $1.00
+         VWAP:     $62770.80  (0.092% ABOVE ↑)
+         CVD 60s:  +12.69 BTC  |  Spike 5s: +6.10 (10.3 vol)
+         Volume:   Buy 16.10 / Sell 3.41  |  S/B: 0.21
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $1.06 | Hold: 5m 56s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$1.06 (5m 56s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:39:00] ─── MARKET SCAN (tick #518) ───────────────────────────
+         Price:    $62844.50  |  Spread: $1.00
+         VWAP:     $62770.95  (0.117% ABOVE ↑)
+         CVD 60s:  +11.25 BTC  |  Spike 5s: +7.30 (9.6 vol)
+         Volume:   Buy 14.69 / Sell 3.44  |  S/B: 0.23
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $1.81 | Hold: 6m 11s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$1.81 (6m 11s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:39:17] ─── MARKET SCAN (tick #526) ───────────────────────────
+         Price:    $62858.50  |  Spread: $1.00
+         VWAP:     $62774.54  (0.134% ABOVE ↑)
+         CVD 60s:  +14.24 BTC  |  Spike 5s: +11.58 (21.8 vol)
+         Volume:   Buy 21.65 / Sell 7.41  |  S/B: 0.34
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.47 | Hold: 6m 28s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.47 (6m 28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:39:32] ─── MARKET SCAN (tick #533) ───────────────────────────
+         Price:    $62863.50  |  Spread: $1.00
+         VWAP:     $62782.50  (0.129% ABOVE ↑)
+         CVD 60s:  +46.56 BTC  |  Spike 5s: +36.34 (44.4 vol)
+         Volume:   Buy 52.77 / Sell 6.21  |  S/B: 0.12
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.70 | Hold: 6m 44s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.70 (6m 44s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:39:49] ─── MARKET SCAN (tick #541) ───────────────────────────
+         Price:    $62857.50  |  Spread: $1.00
+         VWAP:     $62782.96  (0.119% ABOVE ↑)
+         CVD 60s:  +45.11 BTC  |  Spike 5s: +33.35 (33.7 vol)
+         Volume:   Buy 50.79 / Sell 5.68  |  S/B: 0.11
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.42 | Hold: 7m 1s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.42 (7m 1s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:40:04] ─── MARKET SCAN (tick #548) ───────────────────────────
+         Price:    $62880.50  |  Spread: $1.00
+         VWAP:     $62787.96  (0.147% ABOVE ↑)
+         CVD 60s:  +64.64 BTC  |  Spike 5s: +38.56 (38.9 vol)
+         Volume:   Buy 69.96 / Sell 5.32  |  S/B: 0.08
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $3.50 | Hold: 7m 16s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$3.50 (7m 16s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:40:20] ─── MARKET SCAN (tick #555) ───────────────────────────
+         Price:    $62861.50  |  Spread: $1.00
+         VWAP:     $62797.46  (0.102% ABOVE ↑)
+         CVD 60s:  +98.87 BTC  |  Spike 5s: +61.19 (62.9 vol)
+         Volume:   Buy 104.94 / Sell 6.07  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62649.19 | RSI 63.0 | ATR $29.93
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.61 | Hold: 7m 31s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.61 (7m 31s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 20m 2s          | Ticks: 556                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 1     | Wins: 1     | Losses: 0                  │
+│ Win Rate:       100.0%                                        │
+│ Profit Factor:  ∞                                        │
+│ Sharpe Ratio:   N/A (need 2+ trades)                       │
+│ Sortino Ratio:  N/A (need 2+ trades)                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.92         | Avg Loss: $0.00            │
+│ Best:     $0.92         | Worst:    $0.00            │
+│ Total Fees Paid: $2.6536                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $999.59                                     │
+│ Realized PnL:  $-0.41 (-0.04%)                               │
+│ Unrealized:    $2.63                                       │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+├──────────────────────────────────────────────────────────────┤
+│ Open: LONG 0.047 BTC @ $62806.00                             │
+│ Mark:  $62862.00     | Unrealized: $2.63             │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1m candles. Latest close: $62861
+[19:40:24] [Refresh] SMA200: $62655.86 | RSI: 67.7 | ATR: $27.57
+[Data] Loaded 200 1h candles. Latest close: $62861
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62860
+[Macro] 🔴 1H: BEARISH (Close: $62861.00 | SMA: $64718.16) | 1D: BEARISH
+
+[19:40:35] ─── MARKET SCAN (tick #562) ───────────────────────────
+         Price:    $62868.50  |  Spread: $1.00
+         VWAP:     $62797.87  (0.112% ABOVE ↑)
+         CVD 60s:  +100.05 BTC  |  Spike 5s: +60.77 (63.7 vol)
+         Volume:   Buy 105.69 / Sell 5.64  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.94 | Hold: 7m 46s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.94 (7m 46s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:40:52] ─── MARKET SCAN (tick #570) ───────────────────────────
+         Price:    $62869.50  |  Spread: $1.00
+         VWAP:     $62798.78  (0.113% ABOVE ↑)
+         CVD 60s:  +94.61 BTC  |  Spike 5s: +0.25 (8.5 vol)
+         Volume:   Buy 98.99 / Sell 4.38  |  S/B: 0.04
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.98 | Hold: 8m 3s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.98 (8m 3s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:41:07] ─── MARKET SCAN (tick #577) ───────────────────────────
+         Price:    $62871.50  |  Spread: $1.00
+         VWAP:     $62798.86  (0.116% ABOVE ↑)
+         CVD 60s:  +80.65 BTC  |  Spike 5s: +0.30 (6.0 vol)
+         Volume:   Buy 84.99 / Sell 4.34  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $3.08 | Hold: 8m 18s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$3.08 (8m 18s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:41:24] ─── MARKET SCAN (tick #585) ───────────────────────────
+         Price:    $62871.50  |  Spread: $1.00
+         VWAP:     $62799.31  (0.115% ABOVE ↑)
+         CVD 60s:  +64.46 BTC  |  Spike 5s: +2.56 (6.8 vol)
+         Volume:   Buy 68.72 / Sell 4.26  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $3.08 | Hold: 8m 35s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$3.08 (8m 35s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:41:39] ─── MARKET SCAN (tick #592) ───────────────────────────
+         Price:    $62860.50  |  Spread: $1.00
+         VWAP:     $62800.34  (0.096% ABOVE ↑)
+         CVD 60s:  +55.81 BTC  |  Spike 5s: -3.33 (9.8 vol)
+         Volume:   Buy 66.58 / Sell 10.76  |  S/B: 0.16
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.56 | Hold: 8m 51s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.56 (8m 51s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:41:54] ─── MARKET SCAN (tick #599) ───────────────────────────
+         Price:    $62863.50  |  Spread: $1.00
+         VWAP:     $62801.33  (0.099% ABOVE ↑)
+         CVD 60s:  -6.75 BTC  |  Spike 5s: -8.88 (15.3 vol)
+         Volume:   Buy 8.74 / Sell 15.49  |  S/B: 1.77
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.70 | Hold: 9m 6s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.70 (9m 6s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:42:09] ─── MARKET SCAN (tick #606) ───────────────────────────
+         Price:    $62863.50  |  Spread: $1.00
+         VWAP:     $62801.36  (0.099% ABOVE ↑)
+         CVD 60s:  -8.02 BTC  |  Spike 5s: -10.70 (13.6 vol)
+         Volume:   Buy 6.91 / Sell 14.93  |  S/B: 2.16
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $2.70 | Hold: 9m 21s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$2.70 (9m 21s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[ERROR] [Pipeline] Watchdog timeout: No data for 15s. Terminating connection...
+[Pipeline] Disconnected. Reconnecting in 1s...
+[Pipeline] Connected to Hyperliquid L1 (READ-ONLY). Subscribing to streams...
+
+[19:42:47] ─── MARKET SCAN (tick #612) ───────────────────────────
+         Price:    $62891.50  |  Spread: $1.00
+         VWAP:     $62801.45  (0.143% ABOVE ↑)
+         CVD 60s:  -7.81 BTC  |  Spike 5s: +0.21 (0.7 vol)
+         Volume:   Buy 6.62 / Sell 14.43  |  S/B: 2.18
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $4.02 | Hold: 9m 58s
+         Phase:    TIGHTENED | CB: 0.08% | Stop: $62757.61 (HARD)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$4.02 (9m 58s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:42:49] ┌─── KILL SWITCH — FORCED TRAIL ──────────────────────────────────────────
+[19:42:49] │ ⏰ 10m 0s without trail. Suffocating with 0.03% CB
+[19:42:49] │ Stop: $62873.63
+[19:42:49] └──────────────────────────────────────────────────────────
+
+[19:43:04] ─── MARKET SCAN (tick #620) ───────────────────────────
+         Price:    $62892.50  |  Spread: $1.00
+         VWAP:     $62803.55  (0.142% ABOVE ↑)
+         CVD 60s:  -0.62 BTC  |  Spike 5s: +9.81 (10.0 vol)
+         Volume:   Buy 11.78 / Sell 12.40  |  S/B: 1.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $4.07 | Hold: 10m 15s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62882.63 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$4.07 (10m 15s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:43:19] ─── MARKET SCAN (tick #627) ───────────────────────────
+         Price:    $62907.50  |  Spread: $1.00
+         VWAP:     $62806.36  (0.161% ABOVE ↑)
+         CVD 60s:  +14.28 BTC  |  Spike 5s: +16.55 (20.1 vol)
+         Volume:   Buy 21.82 / Sell 7.54  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $4.77 | Hold: 10m 30s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62888.63 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$4.77 (10m 30s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:43:34] ─── MARKET SCAN (tick #634) ───────────────────────────
+         Price:    $62919.50  |  Spread: $1.00
+         VWAP:     $62806.51  (0.180% ABOVE ↑)
+         CVD 60s:  +19.18 BTC  |  Spike 5s: +15.60 (19.5 vol)
+         Volume:   Buy 21.46 / Sell 2.28  |  S/B: 0.11
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $5.33 | Hold: 10m 45s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62900.62 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$5.33 (10m 45s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:43:49] ─── MARKET SCAN (tick #641) ───────────────────────────
+         Price:    $62920.50  |  Spread: $1.00
+         VWAP:     $62809.84  (0.176% ABOVE ↑)
+         CVD 60s:  +30.29 BTC  |  Spike 5s: +18.39 (24.7 vol)
+         Volume:   Buy 33.61 / Sell 3.32  |  S/B: 0.10
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $5.38 | Hold: 11m 0s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62901.62 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$5.38 (11m 0s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:44:04] ─── MARKET SCAN (tick #648) ───────────────────────────
+         Price:    $62951.00  |  Spread: $6.00
+         VWAP:     $62811.53  (0.222% ABOVE ↑)
+         CVD 60s:  +36.77 BTC  |  Spike 5s: +18.09 (20.6 vol)
+         Volume:   Buy 40.02 / Sell 3.25  |  S/B: 0.08
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $6.82 | Hold: 11m 16s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62932.11 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$6.82 (11m 16s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:44:19] ─── MARKET SCAN (tick #655) ───────────────────────────
+         Price:    $62946.50  |  Spread: $1.00
+         VWAP:     $62816.49  (0.207% ABOVE ↑)
+         CVD 60s:  +50.97 BTC  |  Spike 5s: +28.74 (32.0 vol)
+         Volume:   Buy 54.63 / Sell 3.66  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: LONG 0.047 BTC @ $62806.00 | uPnL: $6.60 | Hold: 11m 31s
+         Phase:    KILL_SWITCH | CB: 0.03% | Stop: $62939.61 (TRAIL)
+         Balance:  $999.59  |  Trades: 1 (W:1 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-0.41 (-0.0%) | W:1 L:0 (100%) | PF:∞ | Sharpe: ---
+║ Pos: LONG 0.047@62806 uPnL:+$6.60 (11m 31s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:44:26] ┌─── TRAIL STOP — KILL_SWITCH ──────────────────────────────────────────
+[19:44:26] │ 📉 Price $62936.50 breached trail $62939.61
+[19:44:26] │ PnL: $6.13 | Phase: KILL_SWITCH (11m 37s) | CB: 0.03%
+[19:44:26] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62928.64 | Slippage: $7.36 / BTC
+[Ledger] SELL 0.047 BTC @ $62928.64 | Fee: $1.3309 | PnL: $5.76 | Balance: $1004.02
+
+[19:44:28] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:44:28] │ LONG 0.047 BTC | VWAP_BOUNCE
+[19:44:28] │ $62806.00 → $62928.64 | TRAIL_KILL_SWITCH | 11m 37s
+[19:44:28] │ Gross: $5.76 | Fees: $2.6593 | Net: $3.10 ✅
+[19:44:28] │ Balance: $1004.02 | W:2 L:0 (100%)
+[19:44:28] └──────────────────────────────────────────────────────────
+
+[19:44:34] ─── MARKET SCAN (tick #662) ───────────────────────────
+         Price:    $62951.50  |  Spread: $1.00
+         VWAP:     $62817.84  (0.213% ABOVE ↑)
+         CVD 60s:  +52.16 BTC  |  Spike 5s: +27.30 (29.1 vol)
+         Volume:   Buy 56.22 / Sell 4.06  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: FLAT
+         Balance:  $1004.02  |  Trades: 2 (W:2 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$4.02 (+0.4%) | W:2 L:0 (100%) | PF:∞ | Sharpe: 225.36
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:44:50] ─── MARKET SCAN (tick #669) ───────────────────────────
+         Price:    $62913.50  |  Spread: $1.00
+         VWAP:     $62823.59  (0.143% ABOVE ↑)
+         CVD 60s:  +70.76 BTC  |  Spike 5s: +43.05 (45.3 vol)
+         Volume:   Buy 75.07 / Sell 4.30  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: FLAT
+         Balance:  $1004.02  |  Trades: 2 (W:2 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$4.02 (+0.4%) | W:2 L:0 (100%) | PF:∞ | Sharpe: 224.20
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:45:05] ─── MARKET SCAN (tick #676) ───────────────────────────
+         Price:    $62907.50  |  Spread: $1.00
+         VWAP:     $62824.03  (0.133% ABOVE ↑)
+         CVD 60s:  +61.51 BTC  |  Spike 5s: +27.12 (33.4 vol)
+         Volume:   Buy 66.41 / Sell 4.90  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: FLAT
+         Balance:  $1004.02  |  Trades: 2 (W:2 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$4.02 (+0.4%) | W:2 L:0 (100%) | PF:∞ | Sharpe: 223.05
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:45:20] ─── MARKET SCAN (tick #683) ───────────────────────────
+         Price:    $62935.50  |  Spread: $1.00
+         VWAP:     $62824.53  (0.177% ABOVE ↑)
+         CVD 60s:  +52.02 BTC  |  Spike 5s: +15.39 (21.4 vol)
+         Volume:   Buy 56.07 / Sell 4.05  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62655.86 | RSI 67.7 | ATR $27.57
+         Position: FLAT
+         Balance:  $1004.02  |  Trades: 2 (W:2 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$4.02 (+0.4%) | W:2 L:0 (100%) | PF:∞ | Sharpe: 221.92
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 25m 2s          | Ticks: 684                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 2     | Wins: 2     | Losses: 0                  │
+│ Win Rate:       100.0%                                        │
+│ Profit Factor:  ∞                                        │
+│ Sharpe Ratio:   221.671                       │
+│ Sortino Ratio:  Infinity                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $2.01         | Avg Loss: $0.00            │
+│ Best:     $3.10         | Worst:    $0.00            │
+│ Total Fees Paid: $5.3129                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $1004.02                                    │
+│ Realized PnL:  +$4.02 (+0.40%)                                │
+│ Unrealized:    $0.00                                       │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1h candles. Latest close: $62947
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62947
+[19:45:24] [Refresh] SMA200: $62661.40 | RSI: 77.7 | ATR: $33.43
+[Data] Loaded 200 1d candles. Latest close: $62947
+[Macro] 🔴 1H: BEARISH (Close: $62947.00 | SMA: $64719.88) | 1D: BEARISH
+
+[19:45:37] ─── MARKET SCAN (tick #691) ───────────────────────────
+         Price:    $62953.50  |  Spread: $1.00
+         VWAP:     $62824.84  (0.205% ABOVE ↑)
+         CVD 60s:  +49.74 BTC  |  Spike 5s: +0.94 (5.9 vol)
+         Volume:   Buy 53.83 / Sell 4.09  |  S/B: 0.08
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: FLAT
+         Balance:  $1004.02  |  Trades: 2 (W:2 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$4.02 (+0.4%) | W:2 L:0 (100%) | PF:∞ | Sharpe: 220.66
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:45:51] ⚠ Shutdown signal received.
+
+┌══════════════════════════════════════════════════════════════┐
+│ SIMULATION COMPLETE — FINAL REPORT                           │
+├══════════════════════════════════════════════════════════════┤
+│ Runtime: 25m 29s         | Ticks: 697                  │
+├══════════════════════════════════════════════════════════════┤
+│ Trades: 2     | Wins: 2     | Losses: 0                  │
+│ Win Rate:       100.0%                                        │
+│ Profit Factor:  ∞                                        │
+│ Sharpe Ratio:   219.637                       │
+│ Sortino Ratio:  Infinity                       │
+├══════════════════════════════════════════════════════════════┤
+│ Avg Win:  $2.01         | Avg Loss: $0.00            │
+│ Best:     $3.10         | Worst:    $0.00            │
+│ Total Fees Paid: $5.3129                                │
+├══════════════════════════════════════════════════════════════┤
+│ Balance:       $1004.02                                    │
+│ Realized PnL:  +$4.02 (+0.40%)                                │
+│ Unrealized:    $0.00                                       │
+│ Max Drawdown:  $0.00 (0.00%)                                │
+├══════════════════════════════════════════════════════════════┤
+│ TRADE HISTORY (last 2)                                   │
+│ ✅ LONG 0.047 @ $62695→$62771 | Net: $0.92                    │
+│ ✅ LONG 0.047 @ $62806→$62929 | Net: $3.10                    │
+└══════════════════════════════════════════════════════════════┘
+
+[19:45:51] Log: sim_log_2026-06-18.txt | Ledger: trade_ledger.jsonl
+
+╔════════════════════════════════════════════════════════════════╗
+║     HYPERBOT V4.1 — THE ORDER FLOW SCALPER                    ║
+║   VWAP + CVD | Micro-Squeeze Exits                            ║
+║   ⚠  NO REAL ORDERS — READ-ONLY MARKET DATA  ⚠               ║
+╚════════════════════════════════════════════════════════════════╝
+
+[19:45:59] [BOOT] Balance: $1000.00 USDC | Risk: 2% | Leverage cap: 3x
+[19:45:59] [BOOT] VWAP proximity: 0.1% | CVD spike: 2x baseline
+[19:45:59] [BOOT] Hard stop: 0.5% | Trail at +0.5%
+[19:45:59] [BOOT] Micro-Squeeze: Init 0.15% → Tight 0.08% (5m) → Kill 0.03% (10m)
+[19:45:59] [BOOT] Cooldown: 5m | Equity floor: $80 | Oracle: REMOVED (v4.1)
+[19:45:59] [BOOT] Logging to: sim_log_2026-06-18.txt
+
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62947
+[19:45:59] [REF] SMA200: $62661.40 | RSI: 77.7 | ATR: $33.43
+[Data] Fetching 200x 1h candles for BTC...
+[Data] Loaded 200 1h candles. Latest close: $62946
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62946
+[Macro] 🔴 1H: BEARISH (Close: $62946.00 | SMA: $64719.86) | 1D: BEARISH
+[Funding] ➡️ Rate: 0.000004 | Annualized: 3.27% | Direction: NEUTRAL
+
+[19:46:01] [BOOT] Connecting to market data feed...
+[19:46:01] [BOOT] V4.1 Order Flow Scalper initialized (Oracle removed). Ctrl+C for final report.
+
+[Pipeline] Connected to Hyperliquid L1 (READ-ONLY). Subscribing to streams...
+[Pipeline] Initial book snapshot received. Feed is LIVE.
+
+[19:46:02] ─── MARKET SCAN (tick #1) ───────────────────────────
+         Price:    $62939.50  |  Spread: $1.00
+         VWAP:     $N/A  (?% ???)
+         CVD 60s:  +0.00 BTC  |  Spike 5s: +0.00 (0.0 vol)
+         Volume:   Buy 0.00 / Sell 0.00  |  S/B: 0.00
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: FLAT
+         Balance:  $1000.00  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: +$0.00 (+0.0%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Risk] Leverage cap applied: 3x max → 0.048 BTC
+[Risk] Equity: $1000.00 | Risk: $20.00 | Size: 0.047 BTC ($2958) | Lev: 3.0x
+
+[19:46:14] ┌─── ENTRY — VWAP BOUNCE BUY (LONG) ──────────────────────────────────────────
+[19:46:14] │ ✓ VWAP: $62941.24 | Price: $62943.50 | Dist: 0.004%
+[19:46:14] │ ✓ CVD Spike: 25.93 BTC in 5s | Ratio: 1113.8x baseline
+[19:46:14] │ ✓ CVD 60s: 25.93 | Direction: BUY PRESSURE
+[19:46:14] │ ✓ Volume in spike: 29.18 BTC
+[19:46:14] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:46:14] │ ✓ Size: 0.047 BTC ($2958 USDC)
+[19:46:14] │ Action: OPEN LONG 0.047 BTC @ ~$62943.50
+[19:46:14] │ Hard stop: $62893.36 (0.1%) | Trail at +0.5%
+[19:46:14] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:46:14] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62944.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.047 BTC @ $62944.00 | Fee: $1.3313 | PnL: $0.00 | Balance: $998.67
+
+[19:46:18] ─── MARKET SCAN (tick #9) ───────────────────────────
+         Price:    $62942.50  |  Spread: $1.00
+         VWAP:     $62941.24  (0.002% ABOVE ↑)
+         CVD 60s:  +25.93 BTC  |  Spike 5s: +25.93 (29.3 vol)
+         Volume:   Buy 27.61 / Sell 1.67  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $-0.07 | Hold: 4s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:$-0.07 (4s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:46:33] ─── MARKET SCAN (tick #16) ───────────────────────────
+         Price:    $62958.50  |  Spread: $1.00
+         VWAP:     $62942.09  (0.026% ABOVE ↑)
+         CVD 60s:  +27.55 BTC  |  Spike 5s: +27.55 (31.1 vol)
+         Volume:   Buy 29.32 / Sell 1.78  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.68 | Hold: 19s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.68 (19s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:46:48] ─── MARKET SCAN (tick #23) ───────────────────────────
+         Price:    $62961.50  |  Spread: $1.00
+         VWAP:     $62942.49  (0.030% ABOVE ↑)
+         CVD 60s:  +27.98 BTC  |  Spike 5s: +27.71 (28.6 vol)
+         Volume:   Buy 29.87 / Sell 1.89  |  S/B: 0.06
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.82 | Hold: 34s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.82 (34s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:47:04] ─── MARKET SCAN (tick #30) ───────────────────────────
+         Price:    $62955.50  |  Spread: $1.00
+         VWAP:     $62951.28  (0.007% ABOVE ↑)
+         CVD 60s:  -22.57 BTC  |  Spike 5s: -48.60 (53.6 vol)
+         Volume:   Buy 30.23 / Sell 52.80  |  S/B: 1.75
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.54 | Hold: 49s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.54 (49s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:47:19] ─── MARKET SCAN (tick #37) ───────────────────────────
+         Price:    $62949.50  |  Spread: $1.00
+         VWAP:     $62951.22  (-0.003% BELOW ↓)
+         CVD 60s:  -23.84 BTC  |  Spike 5s: -51.62 (54.7 vol)
+         Volume:   Buy 31.10 / Sell 54.94  |  S/B: 1.77
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.26 | Hold: 1m 4s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.26 (1m 4s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:47:34] ─── MARKET SCAN (tick #44) ───────────────────────────
+         Price:    $62949.50  |  Spread: $1.00
+         VWAP:     $62951.09  (-0.003% BELOW ↓)
+         CVD 60s:  -28.13 BTC  |  Spike 5s: -5.44 (10.0 vol)
+         Volume:   Buy 31.81 / Sell 59.95  |  S/B: 1.88
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.26 | Hold: 1m 20s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.26 (1m 20s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:47:49] ─── MARKET SCAN (tick #51) ───────────────────────────
+         Price:    $62949.50  |  Spread: $1.00
+         VWAP:     $62951.05  (-0.002% BELOW ↓)
+         CVD 60s:  -28.89 BTC  |  Spike 5s: -5.47 (9.2 vol)
+         Volume:   Buy 30.85 / Sell 59.74  |  S/B: 1.94
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $0.26 | Hold: 1m 35s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:+$0.26 (1m 35s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:48:04] ─── MARKET SCAN (tick #58) ───────────────────────────
+         Price:    $62932.50  |  Spread: $1.00
+         VWAP:     $62948.88  (-0.026% BELOW ↓)
+         CVD 60s:  -45.37 BTC  |  Spike 5s: +4.33 (18.7 vol)
+         Volume:   Buy 15.06 / Sell 60.43  |  S/B: 4.01
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $-0.54 | Hold: 1m 50s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:$-0.54 (1m 50s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:48:19] ─── MARKET SCAN (tick #65) ───────────────────────────
+         Price:    $62917.50  |  Spread: $1.00
+         VWAP:     $62947.99  (-0.048% BELOW ↓)
+         CVD 60s:  -44.34 BTC  |  Spike 5s: +11.31 (18.8 vol)
+         Volume:   Buy 17.55 / Sell 61.89  |  S/B: 3.53
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $-1.25 | Hold: 2m 5s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:$-1.25 (2m 5s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:48:34] ─── MARKET SCAN (tick #72) ───────────────────────────
+         Price:    $62908.50  |  Spread: $1.00
+         VWAP:     $62946.80  (-0.061% BELOW ↓)
+         CVD 60s:  +3.06 BTC  |  Spike 5s: +9.87 (20.3 vol)
+         Volume:   Buy 17.70 / Sell 14.64  |  S/B: 0.83
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $-1.67 | Hold: 2m 20s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:$-1.67 (2m 20s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:48:51] ─── MARKET SCAN (tick #80) ───────────────────────────
+         Price:    $62893.50  |  Spread: $1.00
+         VWAP:     $62946.37  (-0.084% BELOW ↓)
+         CVD 60s:  +3.82 BTC  |  Spike 5s: -3.70 (4.7 vol)
+         Volume:   Buy 16.79 / Sell 12.97  |  S/B: 0.77
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: LONG 0.047 BTC @ $62944.00 | uPnL: $-2.37 | Hold: 2m 37s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62893.36 (HARD)
+         Balance:  $998.67  |  Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-1.33 (-0.1%) | W:0 L:0 (--) | PF:-- | Sharpe: ---
+║ Pos: LONG 0.047@62944 uPnL:$-2.37 (2m 37s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:48:56] ┌─── HARD STOP-LOSS / BREAK-EVEN ──────────────────────────────────────────
+[19:48:56] │ ⛔ Price $62891.50 breached stop $62893.36
+[19:48:56] │ LONG $62944.00 | PnL: $-2.47 | Phase: INITIAL (2m 41s)
+[19:48:56] │ Action: CLOSE @ market
+[19:48:56] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62891.00 | Slippage: $0.00 / BTC
+[Ledger] SELL 0.047 BTC @ $62891.00 | Fee: $1.3301 | PnL: $-2.49 | Balance: $994.85
+[Cooldown] LONG entries locked for 5 minutes until 19:53:56
+[Risk] Leverage cap applied: 3x max → 0.047 BTC
+[Risk] Equity: $994.85 | Risk: $19.90 | Size: 0.047 BTC ($2956) | Lev: 3.0x
+
+[19:48:58] ┌─── ENTRY — VWAP REJECTION SELL (SHORT) ──────────────────────────────────────────
+[19:48:58] │ ✓ VWAP: $62946.20 | Price: $62892.50 | Dist: -0.085%
+[19:48:58] │ ✓ CVD Spike: -4.04 BTC in 5s | Ratio: 13.1x baseline
+[19:48:58] │ ✓ CVD 60s: 3.17 | Direction: SELL PRESSURE
+[19:48:58] │ ✓ Volume in spike: 4.97 BTC
+[19:48:58] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:48:58] │ ✓ Size: 0.047 BTC ($2956 USDC)
+[19:48:58] │ Action: OPEN SHORT 0.047 BTC @ ~$62892.50
+[19:48:58] │ Hard stop: $62942.64 (0.1%) | Trail at +0.5%
+[19:48:58] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:48:58] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62892.00 | Slippage: $0.00 / BTC
+[Ledger] SELL 0.047 BTC @ $62892.00 | Fee: $1.3302 | PnL: $0.00 | Balance: $993.52
+
+[19:48:58] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:48:58] │ LONG 0.047 BTC | VWAP_BOUNCE
+[19:48:58] │ $62944.00 → $62891.00 | HARD_STOP | 2m 41s
+[19:48:58] │ Gross: $-2.49 | Fees: $2.6614 | Net: $-5.15 ❌
+[19:48:58] │ Balance: $994.85 | W:0 L:1 (0%)
+[19:48:58] └──────────────────────────────────────────────────────────
+
+[19:49:09] ─── MARKET SCAN (tick #88) ───────────────────────────
+         Price:    $62892.50  |  Spread: $1.00
+         VWAP:     $62944.96  (-0.083% BELOW ↓)
+         CVD 60s:  +4.82 BTC  |  Spike 5s: -3.97 (4.3 vol)
+         Volume:   Buy 15.80 / Sell 10.98  |  S/B: 0.69
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.02 | Hold: 10s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.02 (10s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:49:24] ─── MARKET SCAN (tick #95) ───────────────────────────
+         Price:    $62884.50  |  Spread: $1.00
+         VWAP:     $62944.43  (-0.095% BELOW ↓)
+         CVD 60s:  +4.66 BTC  |  Spike 5s: -4.76 (5.1 vol)
+         Volume:   Buy 15.33 / Sell 10.67  |  S/B: 0.70
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $0.35 | Hold: 25s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:+$0.35 (25s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:49:39] ─── MARKET SCAN (tick #102) ───────────────────────────
+         Price:    $62896.50  |  Spread: $1.00
+         VWAP:     $62940.51  (-0.070% BELOW ↓)
+         CVD 60s:  -1.49 BTC  |  Spike 5s: +0.05 (12.8 vol)
+         Volume:   Buy 11.05 / Sell 12.55  |  S/B: 1.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.21 | Hold: 41s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.21 (41s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:49:56] ─── MARKET SCAN (tick #110) ───────────────────────────
+         Price:    $62899.50  |  Spread: $1.00
+         VWAP:     $62939.67  (-0.064% BELOW ↓)
+         CVD 60s:  -1.73 BTC  |  Spike 5s: +5.70 (11.9 vol)
+         Volume:   Buy 9.29 / Sell 11.02  |  S/B: 1.19
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.35 | Hold: 58s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.35 (58s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Funding] ➡️ Rate: 0.000004 | Annualized: 3.55% | Direction: NEUTRAL
+[19:50:01] [FUNDING] T-10min | Rate: 0.0004% | NEUTRAL
+[19:50:01] [FUNDING] ⚡ Adverse funding. Tightening trail to 0.05%
+
+[19:50:11] ─── MARKET SCAN (tick #117) ───────────────────────────
+         Price:    $62905.50  |  Spread: $1.00
+         VWAP:     $62939.30  (-0.054% BELOW ↓)
+         CVD 60s:  +2.39 BTC  |  Spike 5s: +1.43 (6.4 vol)
+         Volume:   Buy 10.27 / Sell 7.88  |  S/B: 0.77
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.63 | Hold: 1m 13s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.63 (1m 13s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:50:27] ─── MARKET SCAN (tick #124) ───────────────────────────
+         Price:    $62905.50  |  Spread: $1.00
+         VWAP:     $62939.12  (-0.053% BELOW ↓)
+         CVD 60s:  +2.19 BTC  |  Spike 5s: +1.46 (2.7 vol)
+         Volume:   Buy 10.38 / Sell 8.19  |  S/B: 0.79
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.63 | Hold: 1m 28s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.63 (1m 28s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:50:42] ─── MARKET SCAN (tick #131) ───────────────────────────
+         Price:    $62925.50  |  Spread: $1.00
+         VWAP:     $62938.71  (-0.021% BELOW ↓)
+         CVD 60s:  +7.68 BTC  |  Spike 5s: +2.09 (3.2 vol)
+         Volume:   Buy 12.18 / Sell 4.50  |  S/B: 0.37
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-1.57 | Hold: 1m 43s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-1.57 (1m 43s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:50:57] ─── MARKET SCAN (tick #138) ───────────────────────────
+         Price:    $62910.50  |  Spread: $1.00
+         VWAP:     $62938.48  (-0.044% BELOW ↓)
+         CVD 60s:  +9.92 BTC  |  Spike 5s: +2.84 (4.7 vol)
+         Volume:   Buy 13.95 / Sell 4.03  |  S/B: 0.29
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62661.40 | RSI 77.7 | ATR $33.43
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-0.87 | Hold: 1m 59s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-0.87 (1m 59s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 5m 2s           | Ticks: 139                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 1     | Wins: 0     | Losses: 1                  │
+│ Win Rate:       0.0%                                        │
+│ Profit Factor:  0.00                                        │
+│ Sharpe Ratio:   N/A (need 2+ trades)                       │
+│ Sortino Ratio:  N/A (need 2+ trades)                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.00         | Avg Loss: $-5.15           │
+│ Best:     $0.00         | Worst:    $-5.15           │
+│ Total Fees Paid: $2.6614                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $993.52                                     │
+│ Realized PnL:  $-6.48 (-0.65%)                               │
+│ Unrealized:    $-1.22                                      │
+│ Max Drawdown:  $5.15 (0.52%)                                │
+├──────────────────────────────────────────────────────────────┤
+│ Open: SHORT 0.047 BTC @ $62892.00                             │
+│ Mark:  $62918.00     | Unrealized: $-1.22            │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1h candles. Latest close: $62925
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $62925
+[19:51:02] [Refresh] SMA200: $62671.07 | RSI: 70.0 | ATR: $32.57
+[Data] Loaded 200 1d candles. Latest close: $62925
+[Macro] 🔴 1H: BEARISH (Close: $62925.00 | SMA: $64719.44) | 1D: BEARISH
+
+[19:51:12] ─── MARKET SCAN (tick #145) ───────────────────────────
+         Price:    $62923.50  |  Spread: $1.00
+         VWAP:     $62938.26  (-0.023% BELOW ↓)
+         CVD 60s:  +5.22 BTC  |  Spike 5s: +0.23 (4.4 vol)
+         Volume:   Buy 7.98 / Sell 2.76  |  S/B: 0.35
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-1.48 | Hold: 2m 14s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-1.48 (2m 14s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:51:27] ─── MARKET SCAN (tick #152) ───────────────────────────
+         Price:    $62923.50  |  Spread: $1.00
+         VWAP:     $62938.21  (-0.023% BELOW ↓)
+         CVD 60s:  +2.80 BTC  |  Spike 5s: -1.33 (2.6 vol)
+         Volume:   Buy 5.77 / Sell 2.97  |  S/B: 0.51
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-1.48 | Hold: 2m 29s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-1.48 (2m 29s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:51:44] ─── MARKET SCAN (tick #160) ───────────────────────────
+         Price:    $62938.50  |  Spread: $1.00
+         VWAP:     $62938.19  (0.000% ABOVE ↑)
+         CVD 60s:  +1.86 BTC  |  Spike 5s: -0.81 (2.5 vol)
+         Volume:   Buy 4.91 / Sell 3.05  |  S/B: 0.62
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: SHORT 0.047 BTC @ $62892.00 | uPnL: $-2.19 | Hold: 2m 46s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62942.64 (HARD)
+         Balance:  $993.52  |  Trades: 1 (W:0 L:1)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════╗
+║ PnL: $-6.48 (-0.6%) | W:0 L:1 (0%) | PF:0.00 | Sharpe: ---
+║ Pos: SHORT 0.047@62892 uPnL:$-2.19 (2m 46s) | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════╝
+
+[19:51:47] ┌─── HARD STOP-LOSS / BREAK-EVEN ──────────────────────────────────────────
+[19:51:47] │ ⛔ Price $62947.50 breached stop $62942.64
+[19:51:47] │ SHORT $62892.00 | PnL: $-2.61 | Phase: INITIAL (2m 48s)
+[19:51:47] │ Action: CLOSE @ market
+[19:51:47] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62948.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.047 BTC @ $62948.00 | Fee: $1.3314 | PnL: $-2.63 | Balance: $989.55
+[Cooldown] SHORT entries locked for 5 minutes until 19:56:47
+
+[19:51:49] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:51:49] │ SHORT 0.047 BTC | VWAP_REJECTION
+[19:51:49] │ $62892.00 → $62948.00 | HARD_STOP | 2m 48s
+[19:51:49] │ Gross: $-2.63 | Fees: $2.6615 | Net: $-5.29 ❌
+[19:51:49] │ Balance: $989.55 | W:0 L:2 (0%)
+[19:51:49] └──────────────────────────────────────────────────────────
+
+[19:52:00] ─── MARKET SCAN (tick #167) ───────────────────────────
+         Price:    $62950.50  |  Spread: $1.00
+         VWAP:     $62941.98  (0.014% ABOVE ↑)
+         CVD 60s:  +66.33 BTC  |  Spike 5s: +64.66 (66.9 vol)
+         Volume:   Buy 69.87 / Sell 3.54  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 1m 56s | SHORT ❄ 4m 47s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -15261.96
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:52:15] ─── MARKET SCAN (tick #174) ───────────────────────────
+         Price:    $62950.50  |  Spread: $1.00
+         VWAP:     $62942.03  (0.013% ABOVE ↑)
+         CVD 60s:  +65.40 BTC  |  Spike 5s: +65.19 (67.6 vol)
+         Volume:   Buy 69.05 / Sell 3.65  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 1m 41s | SHORT ❄ 4m 31s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -14952.28
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:52:30] ─── MARKET SCAN (tick #181) ───────────────────────────
+         Price:    $62950.50  |  Spread: $1.00
+         VWAP:     $62942.08  (0.013% ABOVE ↑)
+         CVD 60s:  +64.99 BTC  |  Spike 5s: +28.37 (28.8 vol)
+         Volume:   Buy 68.27 / Sell 3.28  |  S/B: 0.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 1m 25s | SHORT ❄ 4m 16s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -14659.03
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:52:45] ─── MARKET SCAN (tick #188) ───────────────────────────
+         Price:    $62971.50  |  Spread: $1.00
+         VWAP:     $62943.16  (0.045% ABOVE ↑)
+         CVD 60s:  +73.61 BTC  |  Spike 5s: +8.31 (9.0 vol)
+         Volume:   Buy 75.37 / Sell 1.76  |  S/B: 0.02
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 1m 10s | SHORT ❄ 4m 1s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -14384.78
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:53:00] ─── MARKET SCAN (tick #195) ───────────────────────────
+         Price:    $62945.50  |  Spread: $1.00
+         VWAP:     $62943.29  (0.004% ABOVE ↑)
+         CVD 60s:  +69.87 BTC  |  Spike 5s: +4.48 (12.8 vol)
+         Volume:   Buy 75.36 / Sell 5.49  |  S/B: 0.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 55s | SHORT ❄ 3m 46s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -14122.61
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:53:15] ─── MARKET SCAN (tick #202) ───────────────────────────
+         Price:    $62959.50  |  Spread: $1.00
+         VWAP:     $62943.31  (0.026% ABOVE ↑)
+         CVD 60s:  +69.39 BTC  |  Spike 5s: +3.15 (12.0 vol)
+         Volume:   Buy 75.05 / Sell 5.66  |  S/B: 0.08
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 40s | SHORT ❄ 3m 31s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -13873.09
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:53:31] ─── MARKET SCAN (tick #209) ───────────────────────────
+         Price:    $62950.50  |  Spread: $1.00
+         VWAP:     $62943.33  (0.011% ABOVE ↑)
+         CVD 60s:  +6.15 BTC  |  Spike 5s: -3.84 (4.8 vol)
+         Volume:   Buy 10.83 / Sell 4.68  |  S/B: 0.43
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 25s | SHORT ❄ 3m 15s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -13638.60
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:53:48] ─── MARKET SCAN (tick #217) ───────────────────────────
+         Price:    $62952.50  |  Spread: $1.00
+         VWAP:     $62943.37  (0.015% ABOVE ↑)
+         CVD 60s:  +4.63 BTC  |  Spike 5s: +0.26 (1.7 vol)
+         Volume:   Buy 9.70 / Sell 5.07  |  S/B: 0.52
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: LONG ❄ 7s | SHORT ❄ 2m 58s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -13387.19
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:54:03] ─── MARKET SCAN (tick #224) ───────────────────────────
+         Price:    $62943.50  |  Spread: $1.00
+         VWAP:     $62943.47  (0.000% ABOVE ↑)
+         CVD 60s:  -0.44 BTC  |  Spike 5s: -3.92 (5.7 vol)
+         Volume:   Buy 8.81 / Sell 9.24  |  S/B: 1.05
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: SHORT ❄ 2m 43s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -13172.45
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:54:18] ─── MARKET SCAN (tick #231) ───────────────────────────
+         Price:    $62958.50  |  Spread: $1.00
+         VWAP:     $62943.48  (0.024% ABOVE ↑)
+         CVD 60s:  -5.87 BTC  |  Spike 5s: -4.17 (6.0 vol)
+         Volume:   Buy 3.64 / Sell 9.51  |  S/B: 2.62
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: SHORT ❄ 2m 28s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12971.08
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:54:33] ─── MARKET SCAN (tick #238) ───────────────────────────
+         Price:    $62968.50  |  Spread: $1.00
+         VWAP:     $62943.72  (0.039% ABOVE ↑)
+         CVD 60s:  -2.65 BTC  |  Spike 5s: -2.94 (7.3 vol)
+         Volume:   Buy 3.34 / Sell 6.00  |  S/B: 1.79
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: SHORT ❄ 2m 13s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12779.47
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:54:49] ─── MARKET SCAN (tick #245) ───────────────────────────
+         Price:    $62973.50  |  Spread: $1.00
+         VWAP:     $62944.05  (0.047% ABOVE ↑)
+         CVD 60s:  -4.06 BTC  |  Spike 5s: -0.53 (4.8 vol)
+         Volume:   Buy 3.79 / Sell 7.85  |  S/B: 2.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: FLAT
+         Cooldown: SHORT ❄ 1m 57s
+         Balance:  $989.55  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-10.45 (-1.0%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12593.69
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+[Risk] Leverage cap applied: 3x max → 0.047 BTC
+[Risk] Equity: $989.55 | Risk: $19.79 | Size: 0.047 BTC ($2960) | Lev: 3.0x
+
+[19:54:51] ┌─── ENTRY — VWAP BOUNCE BUY (LONG) ──────────────────────────────────────────
+[19:54:51] │ ✓ VWAP: $62945.30 | Price: $62970.50 | Dist: 0.040%
+[19:54:51] │ ✓ CVD Spike: 10.66 BTC in 5s | Ratio: 17.8x baseline
+[19:54:51] │ ✓ CVD 60s: 7.17 | Direction: BUY PRESSURE
+[19:54:51] │ ✓ Volume in spike: 16.00 BTC
+[19:54:51] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:54:51] │ ✓ Size: 0.047 BTC ($2960 USDC)
+[19:54:51] │ Action: OPEN LONG 0.047 BTC @ ~$62970.50
+[19:54:51] │ Hard stop: $62921.64 (0.1%) | Trail at +0.5%
+[19:54:51] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:54:51] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62971.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.047 BTC @ $62971.00 | Fee: $1.3318 | PnL: $0.00 | Balance: $988.22
+[Funding] ➡️ Rate: 0.000005 | Annualized: 4.00% | Direction: NEUTRAL
+[19:55:02] [FUNDING] T-5min | Rate: 0.0005% | NEUTRAL
+[19:55:02] [FUNDING] ⚡ Adverse funding. Tightening trail to 0.05%
+
+[19:55:06] ─── MARKET SCAN (tick #253) ───────────────────────────
+         Price:    $62972.50  |  Spread: $1.00
+         VWAP:     $62945.59  (0.043% ABOVE ↑)
+         CVD 60s:  +8.97 BTC  |  Spike 5s: +12.58 (18.3 vol)
+         Volume:   Buy 17.03 / Sell 8.06  |  S/B: 0.47
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $0.07 | Hold: 14s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12397.71
+║ Pos: LONG 0.047@62971 uPnL:+$0.07 (14s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:55:21] ─── MARKET SCAN (tick #260) ───────────────────────────
+         Price:    $62955.50  |  Spread: $1.00
+         VWAP:     $62945.64  (0.016% ABOVE ↑)
+         CVD 60s:  +8.79 BTC  |  Spike 5s: +11.40 (16.6 vol)
+         Volume:   Buy 16.69 / Sell 7.90  |  S/B: 0.47
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.73 | Hold: 30s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12228.39
+║ Pos: LONG 0.047@62971 uPnL:$-0.73 (30s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:55:36] ─── MARKET SCAN (tick #267) ───────────────────────────
+         Price:    $62933.50  |  Spread: $1.00
+         VWAP:     $62945.62  (-0.019% BELOW ↓)
+         CVD 60s:  +6.38 BTC  |  Spike 5s: -0.84 (5.6 vol)
+         Volume:   Buy 16.93 / Sell 10.55  |  S/B: 0.62
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.76 | Hold: 45s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -12068.34
+║ Pos: LONG 0.047@62971 uPnL:$-1.76 (45s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:55:51] ─── MARKET SCAN (tick #274) ───────────────────────────
+         Price:    $62938.50  |  Spread: $1.00
+         VWAP:     $62945.55  (-0.011% BELOW ↓)
+         CVD 60s:  +8.94 BTC  |  Spike 5s: -3.79 (5.6 vol)
+         Volume:   Buy 16.67 / Sell 7.73  |  S/B: 0.46
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62671.07 | RSI 70.0 | ATR $32.57
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.53 | Hold: 1m 0s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11911.47
+║ Pos: LONG 0.047@62971 uPnL:$-1.53 (1m 0s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 10m 2s          | Ticks: 278                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 2     | Wins: 0     | Losses: 2                  │
+│ Win Rate:       0.0%                                        │
+│ Profit Factor:  0.00                                        │
+│ Sharpe Ratio:   -11816.286                       │
+│ Sortino Ratio:  -1.000                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.00         | Avg Loss: $-5.22           │
+│ Best:     $0.00         | Worst:    $-5.29           │
+│ Total Fees Paid: $5.3229                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $988.22                                     │
+│ Realized PnL:  $-11.78 (-1.18%)                              │
+│ Unrealized:    $-1.97                                      │
+│ Max Drawdown:  $10.45 (1.04%)                               │
+├──────────────────────────────────────────────────────────────┤
+│ Open: LONG 0.047 BTC @ $62971.00                             │
+│ Mark:  $62929.00     | Unrealized: $-1.97            │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1m candles. Latest close: $62928
+[19:56:01] [Refresh] SMA200: $62680.54 | RSI: 60.7 | ATR: $34.07
+[Data] Loaded 200 1h candles. Latest close: $62928
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62928
+[Macro] 🔴 1H: BEARISH (Close: $62928.00 | SMA: $64719.50) | 1D: BEARISH
+
+[19:56:06] ─── MARKET SCAN (tick #281) ───────────────────────────
+         Price:    $62935.50  |  Spread: $1.00
+         VWAP:     $62945.17  (-0.015% BELOW ↓)
+         CVD 60s:  +2.43 BTC  |  Spike 5s: -9.77 (11.4 vol)
+         Volume:   Buy 16.11 / Sell 13.68  |  S/B: 0.85
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.67 | Hold: 1m 15s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11763.44
+║ Pos: LONG 0.047@62971 uPnL:$-1.67 (1m 15s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:56:21] ─── MARKET SCAN (tick #288) ───────────────────────────
+         Price:    $62936.50  |  Spread: $1.00
+         VWAP:     $62944.85  (-0.013% BELOW ↓)
+         CVD 60s:  -5.78 BTC  |  Spike 5s: -15.13 (16.3 vol)
+         Volume:   Buy 14.87 / Sell 20.65  |  S/B: 1.39
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.62 | Hold: 1m 30s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11619.37
+║ Pos: LONG 0.047@62971 uPnL:$-1.62 (1m 30s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:56:37] ─── MARKET SCAN (tick #295) ───────────────────────────
+         Price:    $62928.50  |  Spread: $1.00
+         VWAP:     $62944.80  (-0.026% BELOW ↓)
+         CVD 60s:  -19.36 BTC  |  Spike 5s: -15.55 (16.8 vol)
+         Volume:   Buy 1.73 / Sell 21.09  |  S/B: 12.18
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-2.00 | Hold: 1m 45s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11479.79
+║ Pos: LONG 0.047@62971 uPnL:$-2.00 (1m 45s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:56:52] ─── MARKET SCAN (tick #302) ───────────────────────────
+         Price:    $62928.50  |  Spread: $1.00
+         VWAP:     $62944.80  (-0.026% BELOW ↓)
+         CVD 60s:  -19.32 BTC  |  Spike 5s: -0.98 (2.1 vol)
+         Volume:   Buy 1.48 / Sell 20.79  |  S/B: 14.09
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-2.00 | Hold: 2m 0s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11346.16
+║ Pos: LONG 0.047@62971 uPnL:$-2.00 (2m 0s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:57:07] ─── MARKET SCAN (tick #309) ───────────────────────────
+         Price:    $62928.50  |  Spread: $1.00
+         VWAP:     $62944.78  (-0.026% BELOW ↓)
+         CVD 60s:  -16.95 BTC  |  Spike 5s: -0.21 (1.2 vol)
+         Volume:   Buy 1.22 / Sell 18.17  |  S/B: 14.91
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-2.00 | Hold: 2m 15s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11217.59
+║ Pos: LONG 0.047@62971 uPnL:$-2.00 (2m 15s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:57:24] ─── MARKET SCAN (tick #317) ───────────────────────────
+         Price:    $62954.50  |  Spread: $1.00
+         VWAP:     $62944.81  (0.015% ABOVE ↑)
+         CVD 60s:  -16.92 BTC  |  Spike 5s: -1.35 (2.5 vol)
+         Volume:   Buy 1.23 / Sell 18.15  |  S/B: 14.79
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.78 | Hold: 2m 32s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -11078.70
+║ Pos: LONG 0.047@62971 uPnL:$-0.78 (2m 32s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:57:39] ─── MARKET SCAN (tick #324) ───────────────────────────
+         Price:    $62951.50  |  Spread: $1.00
+         VWAP:     $62944.84  (0.011% ABOVE ↑)
+         CVD 60s:  -11.18 BTC  |  Spike 5s: -2.01 (3.4 vol)
+         Volume:   Buy 1.35 / Sell 12.53  |  S/B: 9.31
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.92 | Hold: 2m 48s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10954.27
+║ Pos: LONG 0.047@62971 uPnL:$-0.92 (2m 48s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:57:54] ─── MARKET SCAN (tick #331) ───────────────────────────
+         Price:    $62955.50  |  Spread: $1.00
+         VWAP:     $62944.85  (0.017% ABOVE ↑)
+         CVD 60s:  -2.19 BTC  |  Spike 5s: -2.15 (3.3 vol)
+         Volume:   Buy 1.36 / Sell 3.55  |  S/B: 2.61
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.73 | Hold: 3m 3s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10837.89
+║ Pos: LONG 0.047@62971 uPnL:$-0.73 (3m 3s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:58:10] ─── MARKET SCAN (tick #338) ───────────────────────────
+         Price:    $62964.50  |  Spread: $1.00
+         VWAP:     $62945.10  (0.031% ABOVE ↑)
+         CVD 60s:  +1.94 BTC  |  Spike 5s: +3.28 (7.5 vol)
+         Volume:   Buy 6.12 / Sell 4.18  |  S/B: 0.68
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.31 | Hold: 3m 18s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10725.94
+║ Pos: LONG 0.047@62971 uPnL:$-0.31 (3m 18s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:58:25] ─── MARKET SCAN (tick #345) ───────────────────────────
+         Price:    $62953.50  |  Spread: $3.00
+         VWAP:     $62945.14  (0.013% ABOVE ↑)
+         CVD 60s:  +1.62 BTC  |  Spike 5s: +3.56 (7.3 vol)
+         Volume:   Buy 6.19 / Sell 4.57  |  S/B: 0.74
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-0.82 | Hold: 3m 33s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10615.37
+║ Pos: LONG 0.047@62971 uPnL:$-0.82 (3m 33s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:58:40] ─── MARKET SCAN (tick #352) ───────────────────────────
+         Price:    $62949.50  |  Spread: $1.00
+         VWAP:     $62945.18  (0.007% ABOVE ↑)
+         CVD 60s:  -0.76 BTC  |  Spike 5s: +2.35 (10.0 vol)
+         Volume:   Buy 7.08 / Sell 7.84  |  S/B: 1.11
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.01 | Hold: 3m 48s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10509.81
+║ Pos: LONG 0.047@62971 uPnL:$-1.01 (3m 48s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:58:55] ─── MARKET SCAN (tick #359) ───────────────────────────
+         Price:    $62943.50  |  Spread: $1.00
+         VWAP:     $62945.19  (-0.003% BELOW ↓)
+         CVD 60s:  +0.87 BTC  |  Spike 5s: -2.57 (5.2 vol)
+         Volume:   Buy 6.94 / Sell 6.07  |  S/B: 0.88
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: LONG 0.047 BTC @ $62971.00 | uPnL: $-1.29 | Hold: 4m 4s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62921.64 (HARD)
+         Balance:  $988.22  |  Trades: 2 (W:0 L:2)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-11.78 (-1.2%) | W:0 L:2 (0%) | PF:0.00 | Sharpe: -10406.02
+║ Pos: LONG 0.047@62971 uPnL:$-1.29 (4m 4s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:59:12] ┌─── HARD STOP-LOSS / BREAK-EVEN ──────────────────────────────────────────
+[19:59:12] │ ⛔ Price $62920.50 breached stop $62921.64
+[19:59:12] │ LONG $62971.00 | PnL: $-2.37 | Phase: INITIAL (4m 21s)
+[19:59:12] │ Action: CLOSE @ market
+[19:59:12] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.047 BTC...
+[Engine] Fill complete. Avg Price: $62918.28 | Slippage: $1.72 / BTC
+[Ledger] SELL 0.047 BTC @ $62918.28 | Fee: $1.3307 | PnL: $-2.48 | Balance: $984.41
+[Cooldown] LONG entries locked for 5 minutes until 20:04:12
+[Risk] Leverage cap applied: 3x max → 0.047 BTC
+[Risk] Equity: $984.41 | Risk: $19.69 | Size: 0.046 BTC ($2894) | Lev: 2.9x
+
+[19:59:14] ┌─── ENTRY — VWAP REJECTION SELL (SHORT) ──────────────────────────────────────────
+[19:59:14] │ ✓ VWAP: $62940.52 | Price: $62918.50 | Dist: -0.035%
+[19:59:14] │ ✓ CVD Spike: -115.36 BTC in 5s | Ratio: 43.2x baseline
+[19:59:14] │ ✓ CVD 60s: -114.04 | Direction: SELL PRESSURE
+[19:59:14] │ ✓ Volume in spike: 115.99 BTC
+[19:59:14] │ ✓ Macro: 1H BEARISH | 1D BEARISH | Funding: NEUTRAL
+[19:59:14] │ ✓ Size: 0.046 BTC ($2894 USDC)
+[19:59:14] │ Action: OPEN SHORT 0.046 BTC @ ~$62918.50
+[19:59:14] │ Hard stop: $62969.61 (0.1%) | Trail at +0.5%
+[19:59:14] │ Micro-Squeeze: 0-5m 0.15% → 5-10m 0.08% → 10m+ KILL 0.03%
+[19:59:14] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.046 BTC...
+[Engine] Fill complete. Avg Price: $62918.00 | Slippage: $0.00 / BTC
+[Ledger] SELL 0.046 BTC @ $62918.00 | Fee: $1.3024 | PnL: $0.00 | Balance: $983.11
+
+[19:59:14] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:59:14] │ LONG 0.047 BTC | VWAP_BOUNCE
+[19:59:14] │ $62971.00 → $62918.28 | HARD_STOP | 4m 21s
+[19:59:14] │ Gross: $-2.48 | Fees: $2.6626 | Net: $-5.14 ❌
+[19:59:14] │ Balance: $984.41 | W:0 L:3 (0%)
+[19:59:14] └──────────────────────────────────────────────────────────
+
+[19:59:14] ─── MARKET SCAN (tick #368) ───────────────────────────
+         Price:    $62918.50  |  Spread: $1.00
+         VWAP:     $62940.52  (-0.035% BELOW ↓)
+         CVD 60s:  -114.04 BTC  |  Spike 5s: -115.36 (116.0 vol)
+         Volume:   Buy 6.68 / Sell 120.72  |  S/B: 18.07
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: SHORT 0.046 BTC @ $62918.00 | uPnL: $-0.02 | Hold: 0s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62969.61 (HARD)
+         Balance:  $983.11  |  Trades: 3 (W:0 L:3)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-16.89 (-1.7%) | W:0 L:3 (0%) | PF:0.00 | Sharpe: -17063.15
+║ Pos: SHORT 0.046@62918 uPnL:$-0.02 (0s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:59:30] ─── MARKET SCAN (tick #375) ───────────────────────────
+         Price:    $62950.50  |  Spread: $1.00
+         VWAP:     $62940.30  (0.016% ABOVE ↑)
+         CVD 60s:  -112.82 BTC  |  Spike 5s: -114.14 (121.0 vol)
+         Volume:   Buy 9.81 / Sell 122.63  |  S/B: 12.50
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: SHORT 0.046 BTC @ $62918.00 | uPnL: $-1.49 | Hold: 15s
+         Phase:    INITIAL | CB: 0.15% | Stop: $62969.61 (HARD)
+         Balance:  $983.11  |  Trades: 3 (W:0 L:3)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ═══════════════════════════════════════════════╗
+║ PnL: $-16.89 (-1.7%) | W:0 L:3 (0%) | PF:0.00 | Sharpe: -16897.78
+║ Pos: SHORT 0.046@62918 uPnL:$-1.49 (15s) | Macro: 🔴 BEAR
+╚═══════════════════════════════════════════════════════════════════╝
+
+[19:59:40] ┌─── HARD STOP-LOSS / BREAK-EVEN ──────────────────────────────────────────
+[19:59:40] │ ⛔ Price $62983.50 breached stop $62969.61
+[19:59:40] │ SHORT $62918.00 | PnL: $-3.01 | Phase: INITIAL (26s)
+[19:59:40] │ Action: CLOSE @ market
+[19:59:40] └──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market BUY for 0.046 BTC...
+[Engine] Fill complete. Avg Price: $62984.00 | Slippage: $0.00 / BTC
+[Ledger] BUY 0.046 BTC @ $62984.00 | Fee: $1.3038 | PnL: $-3.04 | Balance: $978.77
+[Cooldown] SHORT entries locked for 5 minutes until 20:04:40
+
+[19:59:43] ┌─── TRADE CLOSED ──────────────────────────────────────────
+[19:59:43] │ SHORT 0.046 BTC | VWAP_REJECTION
+[19:59:43] │ $62918.00 → $62984.00 | HARD_STOP | 26s
+[19:59:43] │ Gross: $-3.04 | Fees: $2.6062 | Net: $-5.64 ❌
+[19:59:43] │ Balance: $978.77 | W:0 L:4 (0%)
+[19:59:43] └──────────────────────────────────────────────────────────
+
+[19:59:47] ─── MARKET SCAN (tick #383) ───────────────────────────
+         Price:    $62999.50  |  Spread: $1.00
+         VWAP:     $62941.62  (0.092% ABOVE ↑)
+         CVD 60s:  -106.29 BTC  |  Spike 5s: -70.46 (100.8 vol)
+         Volume:   Buy 16.60 / Sell 122.89  |  S/B: 7.40
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: FLAT
+         Cooldown: LONG ❄ 4m 25s | SHORT ❄ 4m 53s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6563.25
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:00:02] ─── MARKET SCAN (tick #390) ───────────────────────────
+         Price:    $63046.50  |  Spread: $1.00
+         VWAP:     $62953.86  (0.147% ABOVE ↑)
+         CVD 60s:  -44.85 BTC  |  Spike 5s: +72.96 (93.8 vol)
+         Volume:   Buy 86.45 / Sell 131.30  |  S/B: 1.52
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: FLAT
+         Cooldown: LONG ❄ 4m 10s | SHORT ❄ 4m 38s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6504.27
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:00:17] ─── MARKET SCAN (tick #397) ───────────────────────────
+         Price:    $63054.50  |  Spread: $1.00
+         VWAP:     $62966.56  (0.140% ABOVE ↑)
+         CVD 60s:  +18.70 BTC  |  Spike 5s: +131.05 (154.1 vol)
+         Volume:   Buy 148.84 / Sell 130.14  |  S/B: 0.87
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: FLAT
+         Cooldown: LONG ❄ 3m 54s | SHORT ❄ 4m 23s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6445.88
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:00:32] ─── MARKET SCAN (tick #404) ───────────────────────────
+         Price:    $63089.50  |  Spread: $1.00
+         VWAP:     $62968.99  (0.191% ABOVE ↑)
+         CVD 60s:  +29.88 BTC  |  Spike 5s: +75.56 (92.9 vol)
+         Volume:   Buy 160.39 / Sell 130.51  |  S/B: 0.81
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: FLAT
+         Cooldown: LONG ❄ 3m 39s | SHORT ❄ 4m 7s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6389.93
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:00:48] ─── MARKET SCAN (tick #411) ───────────────────────────
+         Price:    $63187.50  |  Spread: $1.00
+         VWAP:     $62981.27  (0.327% ABOVE ↑)
+         CVD 60s:  +165.00 BTC  |  Spike 5s: +85.44 (111.0 vol)
+         Volume:   Buy 190.91 / Sell 25.90  |  S/B: 0.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62680.54 | RSI 60.7 | ATR $34.07
+         Position: FLAT
+         Cooldown: LONG ❄ 3m 24s | SHORT ❄ 3m 52s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6335.23
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+[Data] Fetching 200x 1m candles for BTC...
+[Data] Fetching 200x 1h candles for BTC...
+
+┌──────────────────────────────────────────────────────────────┐
+│ PERFORMANCE REPORT                                           │
+├──────────────────────────────────────────────────────────────┤
+│ Runtime: 15m 2s          | Ticks: 417                  │
+├──────────────────────────────────────────────────────────────┤
+│ Trades: 4     | Wins: 0     | Losses: 4                  │
+│ Win Rate:       0.0%                                        │
+│ Profit Factor:  0.00                                        │
+│ Sharpe Ratio:   -6288.439                       │
+│ Sortino Ratio:  -0.999                       │
+├──────────────────────────────────────────────────────────────┤
+│ Avg Win:  $0.00         | Avg Loss: $-5.31           │
+│ Best:     $0.00         | Worst:    $-5.64           │
+│ Total Fees Paid: $10.5917                                │
+├──────────────────────────────────────────────────────────────┤
+│ Balance:       $978.77                                     │
+│ Realized PnL:  $-21.23 (-2.12%)                              │
+│ Unrealized:    $0.00                                       │
+│ Max Drawdown:  $21.23 (2.12%)                               │
+└──────────────────────────────────────────────────────────────┘
+
+[Data] Loaded 200 1h candles. Latest close: $63174
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1m candles. Latest close: $63174
+[20:01:01] [Refresh] SMA200: $62689.86 | RSI: 72.1 | ATR: $46.93
+[Data] Loaded 200 1d candles. Latest close: $63174
+[Macro] 🔴 1H: BEARISH (Close: $63174.00 | SMA: $64666.32) | 1D: BEARISH
+
+[20:01:03] ─── MARKET SCAN (tick #418) ───────────────────────────
+         Price:    $63179.50  |  Spread: $1.00
+         VWAP:     $62983.11  (0.312% ABOVE ↑)
+         CVD 60s:  +167.44 BTC  |  Spike 5s: +33.31 (58.5 vol)
+         Volume:   Buy 192.89 / Sell 25.46  |  S/B: 0.13
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62689.86 | RSI 72.1 | ATR $46.93
+         Position: FLAT
+         Cooldown: LONG ❄ 3m 9s | SHORT ❄ 3m 37s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6282.20
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:01:18] ─── MARKET SCAN (tick #425) ───────────────────────────
+         Price:    $63135.50  |  Spread: $1.00
+         VWAP:     $62984.03  (0.240% ABOVE ↑)
+         CVD 60s:  +160.89 BTC  |  Spike 5s: +3.40 (28.0 vol)
+         Volume:   Buy 186.86 / Sell 25.97  |  S/B: 0.14
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: NEUTRAL
+         Ref:      SMA200 $62689.86 | RSI 72.1 | ATR $46.93
+         Position: FLAT
+         Cooldown: LONG ❄ 2m 54s | SHORT ❄ 3m 22s
+         Balance:  $978.77  |  Trades: 4 (W:0 L:4)
+         ──────────────────────────────────────────────────────────
+╔══ HYPERBOT STATUS ══════════════════════════════════════════════╗
+║ PnL: $-21.23 (-2.1%) | W:0 L:4 (0%) | PF:0.00 | Sharpe: -6230.44
+║ Pos: FLAT | Macro: 🔴 BEAR
+╚══════════════════════════════════════════════════════════════════╝
+
+[20:01:21] ⚠ Shutdown signal received.
+
+┌══════════════════════════════════════════════════════════════┐
+│ SIMULATION COMPLETE — FINAL REPORT                           │
+├══════════════════════════════════════════════════════════════┤
+│ Runtime: 15m 21s         | Ticks: 426                  │
+├══════════════════════════════════════════════════════════════┤
+│ Trades: 4     | Wins: 0     | Losses: 4                  │
+│ Win Rate:       0.0%                                        │
+│ Profit Factor:  0.00                                        │
+│ Sharpe Ratio:   -6220.980                       │
+│ Sortino Ratio:  -0.999                       │
+├══════════════════════════════════════════════════════════════┤
+│ Avg Win:  $0.00         | Avg Loss: $-5.31           │
+│ Best:     $0.00         | Worst:    $-5.64           │
+│ Total Fees Paid: $10.5917                                │
+├══════════════════════════════════════════════════════════════┤
+│ Balance:       $978.77                                     │
+│ Realized PnL:  $-21.23 (-2.12%)                              │
+│ Unrealized:    $0.00                                       │
+│ Max Drawdown:  $21.23 (2.12%)                               │
+├══════════════════════════════════════════════════════════════┤
+│ TRADE HISTORY (last 4)                                   │
+│ ❌ LONG 0.047 @ $62944→$62891 | Net: $-5.15                   │
+│ ❌ SHORT 0.047 @ $62892→$62948 | Net: $-5.29                  │
+│ ❌ LONG 0.047 @ $62971→$62918 | Net: $-5.14                   │
+│ ❌ SHORT 0.046 @ $62918→$62984 | Net: $-5.64                  │
+└══════════════════════════════════════════════════════════════┘
+
+[20:01:21] Log: sim_log_2026-06-18.txt | Ledger: trade_ledger.jsonl

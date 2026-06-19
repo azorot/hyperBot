@@ -1,4 +1,4 @@
-const URL = 'https://api.hyperliquid.xyz/info';
+const API_URL = 'https://api.hyperliquid.xyz/info';
 
 function getIntervalMs(interval) {
     const unit = interval.slice(-1);
@@ -10,53 +10,60 @@ function getIntervalMs(interval) {
     return 60 * 1000; // Default to 1m
 }
 
+/**
+ * Fetches OHLC candle data from Hyperliquid.
+ * Can be called repeatedly for periodic indicator refresh.
+ */
 async function fetchHistoricalOHLC(coin = 'BTC', interval = '1m', periods = 200) {
     const intervalMs = getIntervalMs(interval);
     const endTime = Date.now();
-    
-    // Calculate the exact start time to pull slightly more than requested to be safe
-    const startTime = endTime - (intervalMs * (periods + 5)); 
+    const startTime = endTime - (intervalMs * (periods + 5));
 
     const payload = {
         type: "candleSnapshot",
-        req: {
-            coin: coin,
-            interval: interval,
-            startTime: startTime,
-            endTime: endTime
-        }
+        req: { coin, interval, startTime, endTime }
     };
 
     try {
-        console.log(`[System] Ripping historical ${interval} data for ${coin}...`);
-        const response = await fetch(URL, {
+        console.log(`[Data] Fetching ${periods}x ${interval} candles for ${coin}...`);
+        
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+        const response = await fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify(payload),
-            headers: { 'Content-Type': 'application/json' }
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal
         });
+        
+        clearTimeout(timeoutId);
 
         const candles = await response.json();
 
         if (!candles || candles.length === 0) {
-            console.log('[Error] No historical data returned.');
+            console.log(`[Data] No ${interval} data returned.`);
             return null;
         }
 
-        // Isolate the exact requested periods from the end of the array
         const targetCandles = candles.slice(-periods);
-
         const closes = targetCandles.map(c => parseFloat(c.c));
         const highs = targetCandles.map(c => parseFloat(c.h));
         const lows = targetCandles.map(c => parseFloat(c.l));
 
-        console.log(`[Success] Memory bank loaded. Tracked ${closes.length} closing prices.`);
-        console.log(`[Stats] Latest Close: $${closes[closes.length - 1]} | Latest High: $${highs[highs.length - 1]}`);
-        
+        console.log(`[Data] Loaded ${closes.length} ${interval} candles. Latest close: $${closes[closes.length - 1]}`);
         return { closes, highs, lows };
     } catch (error) {
-        console.error('[CRITICAL] Failed to fetch historical data:', error);
+        console.error(`[CRITICAL] Failed to fetch ${interval} data:`, error.message);
         return null;
     }
 }
 
-module.exports = fetchHistoricalOHLC;
+/**
+ * Convenience wrapper to fetch hourly candles for macro trend analysis.
+ */
+async function fetchHourlyCandles(coin = 'BTC', periods = 200) {
+    return fetchHistoricalOHLC(coin, '1h', periods);
+}
+
+module.exports = { fetchHistoricalOHLC, fetchHourlyCandles };

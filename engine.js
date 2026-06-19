@@ -44,8 +44,13 @@ class MatchingEngine {
         const averagePrice = totalCost / filledSize;
         const topOfBookPrice = parseFloat(bookSide[0].px);
         const slippage = Math.abs(averagePrice - topOfBookPrice);
+        const slippagePct = averagePrice > 0 ? slippage / averagePrice : 0;
 
         console.log(`[Engine] Fill complete. Avg Price: $${averagePrice.toFixed(2)} | Slippage: $${slippage.toFixed(2)} / BTC`);
+
+        if (slippagePct > 0.0005) {
+            console.log(`[WARNING] High Slippage Detected: ${(slippagePct * 100).toFixed(3)}% (> 0.05% threshold). Execution efficiency degraded.`);
+        }
 
         // Format for the state ledger: positive for buy (long), negative for sell (short)
         const sizeChange = side === 'buy' ? filledSize : -filledSize;

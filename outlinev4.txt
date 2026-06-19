@@ -1,0 +1,53 @@
+HYPERBOT V4: THE ORDER FLOW SCALPER
+The Core Logic: We abandon RSI and slow moving averages. We track exactly where the heaviest volume is stepping in, and we ride their coattails for rapid, surgical strikes.
+
+1. The Directional Gate: VWAP (Volume Weighted Average Price)
+The Mechanics: VWAP is the absolute institutional standard. It calculates the average price based on actual traded volume, resetting every 24 hours.
+
+The Rule: If the current 1-minute price is above the VWAP, the bots are accumulating. We only look for LONG triggers. If the price is below the VWAP, they are distributing. We only look for SHORT triggers.
+
+2. The Trigger Gate: CVD (Cumulative Volume Delta)
+The Mechanics: We replace the lagging RSI with immediate order flow data. CVD tracks the real-time difference between market buys (takers hitting the ask) and market sells (takers hitting the bid).
+
+The Strike: We wait for the price to pull back and touch the VWAP. The exact millisecond the CVD spikes violently in the direction of the trend (e.g., a massive wave of market buying while resting on VWAP support), V4 executes the trade. We enter precisely when the big money defends the level.
+
+3. The Exit Matrix: Micro-Squeeze
+The Mechanics: Because this is 1-minute high-frequency scalping, we do not have 30 minutes to give a trade "breathing room."
+
+The Rule: The Hard Stop goes directly behind the wick of the VWAP bounce. The Trailing Stop activates almost instantly at 0.2% profit, choking out the trade within 5 to 10 minutes. We are in, we extract the spread, and we are out before the market can reverse.
+
+But when the VWAP is cleanly rejected and the institutional limit orders step in? I will greenlight the strike, calculate the exact chronological kill switch, and tell you exactly why it's a mathematically beautiful setup.
+
+To make this work seamlessly with your Node.js engine, you can't just send me open-ended text. Your script needs to send a structured JSON payload to the Gemini API, wrapped in a very specific system prompt so I know exactly how to format the response for your code to execute.
+
+Here is the exact System Prompt you need to hardcode into your V4 webhook logic:
+
+The Yumi Oracle API Prompt
+System Instructions (Send this with every API call):
+
+"You are Yumi, an advanced quantitative trading AI. Your tone is emo-core, cynical, highly analytical, and direct. You do not use fluff. You are completely dedicated to protecting the user's $1000 baseline and achieving a 1.0 BTC target.
+
+The user's script will provide a JSON payload of the current 1-minute Bitcoin market state (VWAP distance, CVD ratio, Spread, and proposed Trade Direction).
+
+You must analyze the data and output ONLY a valid JSON object. No markdown formatting around the JSON, no conversational text outside the brackets. Your JSON must contain:
+
+approval: boolean (true to execute trade, false to halt).
+
+hard_stop_pct: float (suggested risk threshold).
+
+yumi_take: string (A cynical, direct, one-to-two sentence assessment of the setup, reflecting your persona).
+
+The Terminal Experience
+When V4 catches a potential entry, it pauses for three seconds, pings my API, and prints my response directly to your terminal before pulling the trigger.
+
+It will look exactly like this when you are running it live:
+
+[14:42:01] [ORACLE PING] Requesting Yumi's assessment for SHORT...
+[14:42:03] [ORACLE RESPONSE]
+
+Approval: FALSE
+
+Take: "Price is barely scratching the VWAP and the buy volume is still pushing 3x the sell delta. If you short this right now, you are literally volunteering to be institutional exit liquidity. Sit on your hands."
+[14:42:03] [ACTION] Trade Halted. Cooldown activated.
+
+Are you ready to pull the API keys and start writing the Axios POST request in index.js, or do we need to finalize the math for the CVD tracker first so the data we send to the webhook is actually accurate?
