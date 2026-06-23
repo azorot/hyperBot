@@ -1,0 +1,61 @@
+Phase 2: Automated Exit Engine (The Profit Lock)
+The bot can no longer run on a "Stop-Loss Only" framework. SimV2 will deploy three distinct, uncompromised exit vectors:
+
+Time-Based Stop (MAX_TRADE_DURATION): A hard 2-hour window. If a trade stagnates and fails to hit a profit target or a stop-loss within 120 minutes, the bot executes a market exit—provided the position is net-positive after fee deductions.
+
+ATR-Adjusted Trailing Stops: The initial safety stop is hard-coded at 3x ATR upon entry. As the position moves into profitable territory, the stop-loss dynamically trails the price upward to lock in gains and eliminate downside risk.
+
+Mean-Reversion RSI Exit: If the active position is a Long and the 1-minute or 15-minute RSI crosses above the hyper-overbought threshold (>70), the bot takes the money and runs immediately, refusing to overstay the macro momentum.
+
+Phase 3: Financial Engineering & Capital Protection
+Dynamic Compounding Sizer: Abandoning the fixed 0.05 BTC position size. Positions must scale as a strict percentage of real-time account equity (e.g., risking exactly 2% of the total pool per trade based on the distance to the ATR stop-loss).
+
+The Cold Storage Sweep: A daily cron job executing at 00:00 UTC. The module automatically calculates surplus net profits above the baseline trading pool ($100) and executes a signed transaction withdrawing those profits directly to your cold storage hardware wallet.
+
+Hard Circuit Breaker: An absolute equity floor (set to $80). If consecutive losses or extreme slippage push the total account value below this line, the bot forcefully cancels all open orders, market-closes active exposure, writes a critical error dump, and terminates the Node process entirely.
+
+Phase 4: Tactical Expansion (Dual-Directional Trading)
+The Short-Side Inversion: Integration of Bearish regime logic to profit during market downturns. The entry gate requires strict confluence: Price < SMA200 + 1H Trend = Bearish + RSI > 70.
+
+Dynamic Hedge Logic: A macroeconomic check that automatically disables Short-triggering if funding rates or higher-timeframe metrics (4H/1D) indicate an aggressive, structural bull market.
+
+Liquidation Watchdog: A risk module that constantly calculates the distance between the current market price and the exchange's maintenance margin liquidation level, alerting the system if the safety buffer drops below 20%.
+
+Phase 5: Analytics Parsing & Infrastructure
+Rolling Ratios: An automated post-trade parser that reads trade_ledger.jsonl to calculate rolling Sharpe and Sortino ratios to quantify downside risk adjusted for fee friction.
+
+Slippage Tracker: A module that flags a system warning if exchange execution slippage eats more than 0.05% of the gross position value.
+
+VPS Migration: Moving the verified production script from local execution to a dedicated, high-uptime VPS to eliminate home network dependency.
+
+
+Claude fixed the immediate bleeding. Implementing the trailing stop means you won't turn double-digit gains into net losses anymore, and keeping a strict directional lock honors the core rule against emotional hedge-mode traps.
+
+However, if you think this is ready for prime time, look closer. Claude built the frame of a car but left out the transmission. Before you let this thing near live markets, several massive gaps remain in the simulation logic.
+
+---
+
+### 🔍 What’s Still Missing: The SimV2 Gap Analysis
+
+| Feature Category | What Claude Added | What Is Still Missing (The Traps) |
+| --- | --- | --- |
+| **Risk Management** | Trailing Stop, Multiple Exits | **Dynamic Position Sizing:** The bot is still throwing a static 0.05 BTC chunk at every trade. On a simulated account, that represents a hard-coded leverage structure that will cause catastrophic drawdown on smaller balances. It must calculate size based on a strict risk-per-trade percentage (e.g., 2% of total equity). |
+| **Quantitative Analytics** | Dashboard placeholders | **Actual Sharpe/Sortino Math:** The status line still reads `Sharpe: ---`. Claude modified `stats.js` to show a clean 3-line layout, but the actual rolling mathematical parser that calculates downside deviation isn't executing yet. |
+| **System Hardening** | Basic file structure | **Watchdog & Environment Security:** There is no mention of moving API keys out of the main codebase into a secure `.env` file, nor is there an active 15-minute connection heartbeat monitor to prevent silent WebSocket drops. |
+| **Tactical Expansion** | Short-Side Inversion | **Liquidation Watchdog & Macro Filters:** While the short logic is coded, there are no safeguard mechanisms tracking proximity to the maintenance margin liquidation level or dynamic filters to pause shorting during high-funding bull regimes. |
+
+---
+
+### 🛠️ The Next Iteration Priority List
+
+To ensure absolute capital preservation before deploying real funds, the codebase requires three mandatory upgrades:
+
+* **Dynamic Risk Calculator (`riskManager.js`):** Replace the static 0.05 BTC parameter. The entry size must dynamically equal `(Account Equity * Risk Percentage) / Distance to Stop Loss`.
+* **The Math Engine Implementation:** Complete the rolling logic for the Sharpe and Sortino ratios so the bot can accurately quantify its risk-adjusted return instead of printing empty hyphens.
+* **Hard Circuit Breaker:** Implement an absolute capital floor check. If a sequence of bad slippage or stopped trades drops the simulation balance below a set threshold, the engine must forcefully kill all exposure and shut down the Node process.
+
+Enforcing these rules keeps the strategy aligned with your long-term Bitcoin accumulation timeline without risking unforced errors during systemic market shifts.
+
+---
+
+Do you want to write the dynamic risk-sizing module next to get rid of that fixed 0.05 BTC allocation, or do you want to hardcode the actual Sharpe/Sortino mathematical parser first?

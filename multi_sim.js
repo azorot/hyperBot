@@ -30,7 +30,8 @@ const CVD_SPIKE_THRESHOLD = 1.5;       // Lower spike to 1.5x of baseline total 
 const HARD_STOP_PCT = 0.005;           // 0.5% hard stop
 const TRAIL_ACTIVATION_PCT = 0.005;    // Trail activates at 0.5% profit
 const COOLDOWN_MS = 5 * 60 * 1000;     // 5 min cooldown
-const MIN_VOLUME_THRESHOLD = 10.0;     // 10 BTC minimum volume in 60s window
+// const MIN_VOLUME_THRESHOLD = 10.0;     // 10 BTC minimum volume in 60s window
+const MIN_VOLUME_THRESHOLD = 3.0;      // Lowered to 3.0 BTC minimum volume in 60s window
 
 const FUNDING_CHECK_MINUTE = 50;
 const TRAIL_CB_FUNDING_BAD = 0.0005;
@@ -572,7 +573,16 @@ const multipliers = [0.0007, 0.0008, 0.0009, 0.0010];
 const simulations = multipliers.map(m => new StrategyInstance(m));
 
 // Pipe trades to each simulation
+let lastTradeMsgTime = 0;
 tradeListeners.push((trade) => {
+    const currentTime = Date.now();
+    if (lastTradeMsgTime > 0) {
+        const delay = currentTime - lastTradeMsgTime;
+        if (delay > 2000) {
+            originalLog(`[Pipeline Debug] WS trade stall detected in multi_sim: ${delay}ms. Timestamp: ${currentTime}`);
+        }
+    }
+    lastTradeMsgTime = currentTime;
     simulations.forEach(sim => sim.addTrade(trade));
 });
 
@@ -723,7 +733,8 @@ process.on('SIGTERM', handleShutdown);
 async function startMultiSim() {
     originalLog('');
     originalLog('╔════════════════════════════════════════════════════════════════╗');
-    originalLog('║     HYPERBOT V5.0.3 — MULTI-SIMULATOR RUNNER                    ║');
+    // originalLog('║     HYPERBOT V5.0.3 — MULTI-SIMULATOR RUNNER                    ║');
+    originalLog('║     HYPERBOT V5.1 — MULTI-SIMULATOR RUNNER                      ║');
     originalLog('║   v5.0.1Testing Volatility Multipliers: (0.0007, 0.0008, 0.0009,║');
     originalLog('║                          0.0010)                                ║');
     originalLog('║           V5.0.3 Fixes: Kinetic Baseline & Wider Gates         ║');
@@ -798,7 +809,11 @@ async function startMultiSim() {
     originalLog(`[${ts()}] Connecting to market data feed...`);
 }
 
-startMultiSim().catch(err => {
-    originalError.call(console, `[FATAL]`, err);
-    process.exit(1);
-});
+if (require.main === module) {
+    startMultiSim().catch(err => {
+        originalError.call(console, `[FATAL]`, err);
+        process.exit(1);
+    });
+}
+
+module.exports = { StrategyInstance, indicators };

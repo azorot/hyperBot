@@ -1,0 +1,32 @@
+Go into multi_sim.js. Inside checkMicroSqueezeExit, strip out the Momentum Snap logic entirely and replace it with this:
+
+
+// ─── TIME-BASED MOMENTUM INVALIDATION (The 60s Rule) ───
+            if (elapsed >= 60000 && !this.state.clearedFees) {
+                const uPnL = isLong ? (midPrice - entry) * position.size : (entry - midPrice) * Math.abs(position.size);
+                
+                // If the trade is fundamentally underwater after 60 seconds, the momentum failed.
+                if (uPnL < 0) {
+                    this.logSignal('MOMENTUM INVALIDATION — SCRATCH TRADE', [
+                        `⏱️ Trade has been underwater for 60s without kinetic follow-through.`,
+                        `The setup is dead. Aborting to limit-exit and preserve capital.`,
+                        `PnL at invalidation: $${uPnL.toFixed(2)}`
+                    ]);
+                    
+                    this.state.tradeReason = 'MOMENTUM_INVALIDATION';
+                    
+                    // Deploy a Post-Only Maker limit order to trap the spread. 
+                    // Do not pay the taker fee to fix a dead trade.
+                    this.engine.postLimitExit(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
+                    return true;
+                }
+            }
+
+The Tactical Shift
+The Execution: If the trade hasn't cleared the fee hurdle and is sitting in the red at the 60-second mark, the bot automatically posts a Maker limit order at the spread to exit.
+
+The Defense: Instead of panicking and eating a full taker fee on a whipsaw, you gracefully back out of the room as a Maker, catching the rebate and turning a structural failure into a controlled scratch.
+
+The Capital Focus: We only reserve the violent HARD_STOP for legitimate waterfall collapses.
+
+Integrate the block. Run the sweep again. Let's see if this traps the exit cleanly.

@@ -1,0 +1,52 @@
+The outline you have is a solid skeleton, but it is missing the vital internal organs of a production-grade algorithmic system. You don't just "move scripts and start trading." If you deploy it raw like that, you will get liquidated by an unhandled exception or a dropped WebSocket.
+Here is the complete, uncompromising architectural blueprint of what we have left to build.
+### 1. Infrastructure & Security Protocol
+You do not put your master wallet's private key in plain text on a $5/month cloud server.
+ * **Generate an Agent Wallet:** Hyperliquid uses "Agent Wallets" (API wallets) to authorize trading bots. This is a secondary private key authorized by your master wallet to strictly sign L1 actions (trades). It has absolutely zero withdrawal permissions.
+ * **The Tokyo VPS Setup:** Provision the AWS ap-northeast-1 instance to minimize transit latency to Hyperliquid's execution engine. Clone the environment and store the Agent Wallet key securely as an environment variable, not hardcoded in your multi.[span_3](start_span)js file.
+### 2. The Auto-Reconnect Armor
+As we already saw in your mobile terminal, WebSockets drop. If your script dies while you are holding a leveraged position, you are flying blind.
+ * **WebSocket Reconnect Loop:** You must wrap the dYdX, Vertex, and Hyperliquid connections in a robust auto-reconnect function with exponential backoff.
+ * **Rate Limit Management:** Hyperliquid APIs utilize a token bucket system (maximum 100 tokens, refilling at 10 per second). Your execution logic must track this so it doesn't spam the API during high-volatility events and get temporarily IP-banned.
+### 3. Execution & Risk Guardrails
+A lead-lag delta is a signal, not a complete trading strategy.
+ * **Define the Trigger:** You need to hardcode the exact spread (e.g., "$15 delta sustained for >200ms") that tells the placeOrder function to fire.
+ * **Position Sizing:** Define the exact dollar amount or BTC fraction the bot is allowed to allocate per trade.
+ * **The Hard Stops:** Code an automated stop-loss limit for every single entry. If the latency spread collapses in the wrong direction, the bot needs to know exactly when to cut the bleed and exit.
+### 4. Logging & Tax Ledger Pipeline
+You brought up tax reporting; we solve it in the code.
+ * **The JSON Ledger:** Program the bot to append a local .json or .csv log for every executed trade (Timestamp, Entry Price, Exit Price, Size, Profit/Loss). When tax season comes, you dump this pristine ledger directly into the reporting software.
+You have the data feeds running. The immediate next step is building the **Agent Wallet** and scripting the **Auto-Reconnect** wrapper for your current terminal code.
+Are we hardening the WebSocket connections first, or do you want to define the exact position sizing limits for the first live test?
+
+I have updated the document to include the granular technical specifications we just mapped out during your walk. This ensures your Accumulation Engine logic is perfectly captured for implementation once the Command Center is live.
+Technical Appendix: The Sniper Reinvestment Engine
+1. Win Rate & Strategy Metrics
+The Win Rate Fallacy: Abandon "win rate" as a standalone metric. It is useless without the Profit Factor (PF).
+Target PF: \frac{\text{Gross Profit}}{\text{Gross Loss}} > 1.5.
+Strategy Requirement: Losses must be capped; winners must be statistically larger than losers.
+Signal Confluence: No "blind" entries. Every trade requires at least two conditions:
+Trend Filter: Price relative to 200 SMA.
+Entry Trigger: Momentum-based (e.g., RSI oversold/turning).
+Survival Check: Bot must pass stress-testing against the most volatile month of the past year.
+2. Risk Management & Execution
+The Whipsaw Defense (Volatility-Adjusted Stops):
+Use ATR (Average True Range) to set stops. Do not use static percentages. Stop distance expands in high volatility and contracts in quiet markets.
+Asymmetric Stops (Long vs. Short):
+Longs: Give wider breathing room (e.g., 3% ATR-based stop).
+Shorts: Tight stop (e.g., 1.5% ATR-based stop) to capitalize on downward velocity.
+Circuit Breaker: If daily account drawdown hits X%, the bot halts all trading. No exceptions.
+3. The Sniper Reinvestment Loop (The "Accumulation Engine")
+Linear Margin: Trading is conducted in USDC-margined perps.
+Profit Allocation Script: Upon closing a profitable trade:
+Buckets: Profits are split 50/50 between [Trading Growth] (re-invested as margin to scale position size) and [Asset Accumulation] (swept into BTC).
+Active Accumulation:
+Shorts: Realized profit immediately triggers a limit buy order for BTC/USDC spot.
+Longs: Realized profit compounds margin to scale the next entry size.
+Profit-to-Asset Conversion: The bot must factor in slippage and spread for the final USDC \rightarrow BTC conversion.
+4. Tight Profit Extraction Loop
+The Trigger: Enabled the moment Net Profit > Fees (even if just 1 cent).
+The Action: Instant activation of a Tight Trailing Stop.
+The Philosophy: Guarantee profit capture. Do not hope for the "moon." Transition risk from "potential gain" to "realized liquidity."
+This rundown is now integrated into your master document. You have the logic, the safety rails, and the accumulation math.
+Mission Status: Logistics (Move-in) primary. Engineering (Code) begins immediately post-move. Power down.

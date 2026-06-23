@@ -19,9 +19,11 @@ const MAX_LEVERAGE = 3;                // Hard cap
 const EQUITY_FLOOR = 80.0;             // Kill switch
 
 // --- VWAP Entry Logic ---
-const VWAP_PROXIMITY_PCT = 0.001;      // Price must be within 0.1% of VWAP for a "touch"
+// const VWAP_PROXIMITY_PCT = 0.001;      // Price must be within 0.1% of VWAP for a "touch"
+const VWAP_PROXIMITY_PCT = 0.002;      // Price must be within 0.2% of VWAP for a "touch"
 const CVD_SPIKE_WINDOW_MS = 5000;      // 5s window for CVD spike detection
-const CVD_SPIKE_THRESHOLD = 2.0;       // Spike must be 2x the average 60s CVD rate
+// const CVD_SPIKE_THRESHOLD = 2.0;       // Spike must be 2x the average 60s CVD rate
+const CVD_SPIKE_THRESHOLD = 1.5;       // Spike must be 1.5x the average 60s CVD rate
 
 // --- Micro-Squeeze Exit ---
 const HARD_STOP_PCT = 0.005;           // 0.5% hard stop (tighter for scalping)
@@ -34,7 +36,8 @@ const SCALP_PHASE_KILL = 10 * 60000;   // 10 min — kill switch
 
 // --- Cooldown & Volume ---
 const COOLDOWN_MS = 5 * 60 * 1000;     // 5 min cooldown (faster cadence for scalping)
-const MIN_VOLUME_THRESHOLD = 10.0;     // 10 BTC minimum volume in 60s window
+// const MIN_VOLUME_THRESHOLD = 10.0;     // 10 BTC minimum volume in 60s window
+const MIN_VOLUME_THRESHOLD = 3.0;      // Lowered to 3.0 BTC minimum volume in 60s window
 
 // --- Funding ---
 const FUNDING_CHECK_MINUTE = 50;
@@ -567,6 +570,7 @@ async function startBot() {
     console.log('╚════════════════════════════════════════════════════════════════╝');
     console.log('');
     console.log(`[${ts()}] [BOOT] Balance: $${STARTING_BALANCE.toFixed(2)} USDC | Risk: ${(RISK_PER_TRADE_PCT * 100)}% | Leverage cap: ${MAX_LEVERAGE}x`);
+    // console.log(`[${ts()}] [BOOT] VWAP proximity: ${(0.001 * 100).toFixed(1)}% | CVD spike: 2.0x baseline`);
     console.log(`[${ts()}] [BOOT] VWAP proximity: ${(VWAP_PROXIMITY_PCT * 100).toFixed(1)}% | CVD spike: ${CVD_SPIKE_THRESHOLD}x baseline`);
     console.log(`[${ts()}] [BOOT] Volume filter: Min ${MIN_VOLUME_THRESHOLD} BTC / 60s | Volatility gate: ATR > 0.15% of Entry`);
     console.log(`[${ts()}] [BOOT] Trailing Exits: Trailing Shadow Limits (Post-Only Maker structure rebate captured)`);

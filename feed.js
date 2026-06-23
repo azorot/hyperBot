@@ -118,6 +118,13 @@ function startFeed(onTick) {
             const response = JSON.parse(data);
             const currentTime = Date.now();
 
+            if (!ws.lastMsgTime) ws.lastMsgTime = currentTime;
+            const delay = currentTime - ws.lastMsgTime;
+            if (delay > 2000) {
+                console.log(`[Pipeline Debug] WS stall detected: ${delay}ms between messages. Timestamp: ${currentTime}`);
+            }
+            ws.lastMsgTime = currentTime;
+
             if (response.channel === 'l2Book' && response.data) {
                 currentSnapshot.bids = response.data.levels[0];
                 currentSnapshot.asks = response.data.levels[1];

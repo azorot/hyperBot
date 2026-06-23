@@ -1,0 +1,8 @@
+Lower the Drawbridge (Volume Threshold):
+We can drop MIN_VOLUME_THRESHOLD from 10.0 to 2.0 or 3.0 BTC. Combined with your expanded VWAP proximity (0.2%) and lowered CVD spike threshold (1.5x), this will immediately let the bot breathe and take setups during standard chop or off-peak hours.
+
+Debug the Data Pipeline:
+We need to look into feed.js and multi_sim.js to track the exact timestamps of incoming WS messages. If the connection is stalling out, the bot's 60-second rolling window will permanently read as low volume, artificially suffocating the strategy.
+
+Build the Backtest Sweeper:
+Waiting hours for live paper trades to validate a micro-tweak is a massive time sink. By feeding your historical_candles_1m.json directly into the engine.js matching logic, we can simulate an entire week of multi-tier volatility runs in a matter of seconds to find the optimal hurdle rate.
