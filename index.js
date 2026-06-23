@@ -1,13 +1,14 @@
 const fs = require('fs');
-const { startFeed, currentSnapshot, macroTrend, refreshMacroTrend, getVolumeMetrics, fundingState, refreshFunding, vwapState, getCVD, getCVDSpike, getSpikeDelta } = require('./feed.js');
+const { startFeed, currentSnapshot, macroTrend, refreshMacroTrend, getVolumeMetrics, fundingState, refreshFunding, vwapState, getCVD, getCVDSpike, getSpikeDelta, hasMinVolume, flushTradeBuffer } = require('./feed.js');
 const VirtualState = require('./state.js');
 const MatchingEngine = require('./engine.js');
 const { fetchHistoricalOHLC } = require('./history');
 const PerformanceTracker = require('./stats.js');
 
 // ═══════════════════════════════════════════════════════════════
-//  V4.1 CONFIG — THE ORDER FLOW SCALPER (NO ORACLE)
-//  VWAP + CVD replaces RSI + SMA. Rapid surgical strikes.
+//  V5.01 CONFIG — THE TIME-DECAY YIELD SCALPER
+//  VWAP + CVD + Time-Decay stop + Log Decay Reversal Snap + 15m Kill Switch.
+//  ATR volatility gating + Trailing Shadow Limits (Post-Only Maker exits).
 //  NO REAL ORDERS. READ-ONLY MARKET DATA. PAPER TRADING ONLY.
 // ═══════════════════════════════════════════════════════════════
 
@@ -31,8 +32,9 @@ const TRAIL_CALLBACK_KILL = 0.0003;    // Kill callback after 10min
 const SCALP_PHASE_1 = 5 * 60000;       // 5 min — tighten
 const SCALP_PHASE_KILL = 10 * 60000;   // 10 min — kill switch
 
-// --- Cooldown ---
+// --- Cooldown & Volume ---
 const COOLDOWN_MS = 5 * 60 * 1000;     // 5 min cooldown (faster cadence for scalping)
+const MIN_VOLUME_THRESHOLD = 10.0;     // 10 BTC minimum volume in 60s window
 
 // --- Funding ---
 const FUNDING_CHECK_MINUTE = 50;
@@ -70,7 +72,7 @@ let breakEvenTriggered = false;
 let cvdBaseline = { avgRate: 0, lastCalc: 0 };
 
 // Indicators (kept for SMA reference in logging, but NOT used for entry)
-let indicators = { sma200: null, atr: null, rsi: null, lastRefresh: null };
+let indicators = { sma200: null, atr: null, fastAtr: null, rsi: null, lastRefresh: null };
 
 // Log
 const LOG_FILE = `sim_log_${new Date().toISOString().slice(0, 10)}.txt`;
@@ -166,9 +168,16 @@ async function refreshIndicators() {
         if (!data || !data.closes) return;
         indicators.sma200 = calculateSMA(data.closes, 200);
         indicators.atr = calculateATR(data.highs, data.lows, data.closes);
+        
+        // Fast ATR on last hour of volatility (60 1m candles)
+        const highs60 = data.highs.slice(-60);
+        const lows60 = data.lows.slice(-60);
+        const closes60 = data.closes.slice(-60);
+        indicators.fastAtr = calculateATR(highs60, lows60, closes60, 14);
+        
         indicators.rsi = calculateRSI(data.closes);
         indicators.lastRefresh = Date.now();
-        console.log(`[${ts()}] [Refresh] SMA200: $${indicators.sma200?.toFixed(2)} | RSI: ${indicators.rsi?.toFixed(1)} | ATR: $${indicators.atr?.toFixed(2)}`);
+        console.log(`[${ts()}] [Refresh] SMA200: $${indicators.sma200?.toFixed(2)} | RSI: ${indicators.rsi?.toFixed(1)} | ATR: $${indicators.atr?.toFixed(2)} | Fast ATR (1H): $${indicators.fastAtr?.toFixed(2)}`);
     } catch (err) { console.error(`[${ts()}] [Refresh] Error:`, err.message); }
 }
 
@@ -191,116 +200,117 @@ function updateCVDBaseline() {
 // ═══════════════════════════════════════════════════════════════
 //  MICRO-SQUEEZE EXIT ENGINE
 // ═══════════════════════════════════════════════════════════════
-function getScalpPhase(elapsedMs) {
-    if (elapsedMs >= SCALP_PHASE_KILL) return { phase: 2, name: 'KILL_SWITCH', callback: TRAIL_CALLBACK_KILL };
-    if (elapsedMs >= SCALP_PHASE_1) return { phase: 1, name: 'TIGHTENED', callback: TRAIL_CALLBACK_TIGHT };
-    return { phase: 0, name: 'INITIAL', callback: TRAIL_CALLBACK_INIT };
-}
 
 function checkMicroSqueezeExit(midPrice, position) {
     if (position.size === 0 || !state.tradeOpenTime) return false;
 
     const isLong = position.size > 0;
+    const side = isLong ? 'LONG' : 'SHORT';
     const entry = position.entryPrice;
     const elapsed = Date.now() - state.tradeOpenTime;
-    const phase = getScalpPhase(elapsed);
 
-    const profitPct = isLong ? (midPrice - entry) / entry : (entry - midPrice) / entry;
-
-    // --- DYNAMIC BREAK-EVEN STOP ---
-    if (!breakEvenTriggered && profitPct >= 0.002) { // 0.2% profit
-        breakEvenTriggered = true;
-        const newStop = isLong ? entry * 1.0005 : entry * 0.9995; // lock in 0.05%
-        
-        if (isLong && newStop > dynamicHardStop) dynamicHardStop = newStop;
-        if (!isLong && newStop < dynamicHardStop) dynamicHardStop = newStop;
-        
-        logSignal('BREAK-EVEN STOP ACTIVATED', [
-            `📈 Price in money (${(profitPct * 100).toFixed(2)}%)`,
-            `Hard stop moved to $${dynamicHardStop.toFixed(2)} to guarantee profit.`
+    // --- 15-MINUTE KILL SWITCH ---
+    if (elapsed >= 900000) {
+        const pnl = isLong ? (midPrice - entry) * position.size : (entry - midPrice) * Math.abs(position.size);
+        logSignal('15-MINUTE KILL SWITCH', [
+            `⏰ Time limit reached (15m). Force closing position via Post-Only Limit Order.`,
+            `${side} entry: $${entry.toFixed(2)} | PnL: $${pnl.toFixed(2)}`,
+            `Action: POST LIMIT EXIT @ spread`
         ]);
+        state.tradeReason = 'TIMEOUT_15M';
+        engine.postLimitExit(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
+        return true;
     }
 
     // --- HARD STOP ---
-    // dynamicHardStop is set at entry (ATR-based) and moves to break-even when in profit
+    // dynamicHardStop is set at entry (ATR-based)
     const hardHit = isLong ? midPrice <= dynamicHardStop : midPrice >= dynamicHardStop;
-
     if (hardHit) {
         const pnl = isLong ? (midPrice - entry) * position.size : (entry - midPrice) * Math.abs(position.size);
-        logSignal('HARD STOP-LOSS / BREAK-EVEN', [
-            `⛔ Price $${midPrice.toFixed(2)} breached stop $${dynamicHardStop.toFixed(2)}`,
-            `${isLong ? 'LONG' : 'SHORT'} $${entry.toFixed(2)} | PnL: $${pnl.toFixed(2)} | Phase: ${phase.name} (${formatDuration(elapsed)})`,
-            `Action: CLOSE @ market`
+        logSignal('HARD STOP-LOSS', [
+            `⛔ Price $${midPrice.toFixed(2)} breached hard stop $${dynamicHardStop.toFixed(2)}`,
+            `${side} entry: $${entry.toFixed(2)} | PnL: $${pnl.toFixed(2)} | Elapsed: ${formatDuration(elapsed)}`,
+            `Action: CLOSE @ market (Taker)`
         ]);
-        state.tradeReason = breakEvenTriggered ? 'BREAK_EVEN_STOP' : 'HARD_STOP';
+        state.tradeReason = 'HARD_STOP';
         engine.executeMarketOrder(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
         
-        if (!breakEvenTriggered) {
-            // Apply cooldown globally to prevent instant flip/revenge trading
-            state.setCooldown('LONG', COOLDOWN_MS);
-            state.setCooldown('SHORT', COOLDOWN_MS);
-        }
-        
+        // Apply cooldown globally to prevent instant flip/revenge trading
+        state.setCooldown('LONG', COOLDOWN_MS);
+        state.setCooldown('SHORT', COOLDOWN_MS);
         resetTradeState();
         return true;
     }
 
-    // --- TRAIL ACTIVATION ---
-
-    if (!trailActive && profitPct >= TRAIL_ACTIVATION_PCT) {
-        trailActive = true;
-        trailHighWater = midPrice;
-        currentCallback = phase.callback;
-        currentStopPrice = isLong ? midPrice * (1 - currentCallback) : midPrice * (1 + currentCallback);
-
-        logSignal('TRAIL ACTIVATED', [
-            `📈 +${(profitPct * 100).toFixed(2)}% (threshold: ${(TRAIL_ACTIVATION_PCT * 100).toFixed(1)}%)`,
-            `Phase: ${phase.name} | Callback: ${(currentCallback * 100).toFixed(2)}% | Stop: $${currentStopPrice.toFixed(2)}`
-        ]);
-        return false;
-    }
-
-    // --- TRAIL UPDATE ---
+    // --- TIME-DECAY TRAILING STOP ---
     if (trailActive) {
-        let cb = phase.callback;
-        if (fundingOverride && currentCallback !== null) cb = currentCallback;
-        else currentCallback = cb;
+        // Reversal Detection (Momentum Snap)
+        if (!state.reversalSnapped) {
+            const { spike } = getCVDSpike(CVD_SPIKE_WINDOW_MS);
+            const spikePerSec = Math.abs(spike) / (CVD_SPIKE_WINDOW_MS / 1000);
+            const spikeRatio = cvdBaseline.avgRate > 0 ? spikePerSec / cvdBaseline.avgRate : 0;
+            const isReversalSpike = isLong ? (spike < 0) : (spike > 0);
 
-        if (isLong) {
-            if (midPrice > trailHighWater) trailHighWater = midPrice;
-            const ns = trailHighWater * (1 - cb);
-            if (ns > currentStopPrice) currentStopPrice = ns;
+            if (isReversalSpike && spikeRatio >= 1.5 && Math.abs(spike) >= 1.0) {
+                state.reversalSnapped = true;
+                state.snapTime = Date.now();
+                logSignal('MOMENTUM SNAP ACTIVATED', [
+                    `⚡ Sudden adverse volume detected! Spike: ${spike.toFixed(2)} BTC (Ratio: ${spikeRatio.toFixed(1)}x baseline)`,
+                    `Abandons linear time-decay. Snapping trailing stop tighter using logarithmic decay.`
+                ]);
+            }
+        }
+
+        // Calculate callback rate
+        const initStop = currentCallback || 0.0015;
+        let cb = initStop;
+        if (state.reversalSnapped) {
+            const timeSinceSnap = Date.now() - state.snapTime;
+            cb = initStop / (1 + Math.log(1 + timeSinceSnap / 1000));
+            if (cb < 0.0002) cb = 0.0002;
         } else {
-            if (midPrice < trailHighWater) trailHighWater = midPrice;
-            const ns = trailHighWater * (1 + cb);
-            if (ns < currentStopPrice) currentStopPrice = ns;
+            // Linear decay
+            if (elapsed > 600000) {
+                cb = 0.0002;
+            } else if (elapsed > 60000) {
+                const ratio = (elapsed - 60000) / (600000 - 60000);
+                cb = initStop - ratio * (initStop - 0.0002);
+                if (cb < 0.0002) cb = 0.0002;
+            }
+        }
+
+        // Taker fee break-even check
+        const clearsFees = engine.clearsTakerFees(entry, midPrice, side);
+        if (clearsFees && !state.clearedFees) {
+            state.clearedFees = true;
+            console.log(`[${ts()}] [Consider] Price action has cleared taker fee threshold ($${engine.getBreakEvenPrice(entry, side).toFixed(2)}). Trailing stop is now active and moving.`);
+        }
+
+        // Only allowed to move trailing stop if we have cleared taker fees
+        if (state.clearedFees) {
+            if (isLong) {
+                if (midPrice > trailHighWater) trailHighWater = midPrice;
+                const ns = trailHighWater * (1 - cb);
+                if (ns > currentStopPrice) currentStopPrice = ns;
+            } else {
+                if (midPrice < trailHighWater) trailHighWater = midPrice;
+                const ns = trailHighWater * (1 + cb);
+                if (ns < currentStopPrice) currentStopPrice = ns;
+            }
         }
 
         const trailHit = isLong ? midPrice <= currentStopPrice : midPrice >= currentStopPrice;
         if (trailHit) {
             const pnl = isLong ? (midPrice - entry) * position.size : (entry - midPrice) * Math.abs(position.size);
-            logSignal(`TRAIL STOP — ${phase.name}`, [
+            logSignal('TRAIL STOP EXIT', [
                 `📉 Price $${midPrice.toFixed(2)} breached trail $${currentStopPrice.toFixed(2)}`,
-                `PnL: $${pnl.toFixed(2)} | Phase: ${phase.name} (${formatDuration(elapsed)}) | CB: ${(cb * 100).toFixed(2)}%`,
-                `${fundingOverride ? '⚡ Funding override active' : ''}`
+                `PnL: $${pnl.toFixed(2)} | Hold: ${formatDuration(elapsed)} | Callback: ${(cb * 100).toFixed(4)}%`,
+                `Snapped: ${state.reversalSnapped ? 'YES (Log Decay)' : 'NO (Linear)'} | Cleared Fees: ${state.clearedFees ? 'YES' : 'NO'}`
             ]);
-            state.tradeReason = `TRAIL_${phase.name}`;
-            engine.executeMarketOrder(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
-            resetTradeState();
+            state.tradeReason = state.clearedFees ? 'TRAIL_EXIT' : 'FEE_THRESHOLD_FAILURE';
+            engine.postLimitExit(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
             return true;
         }
-    }
-
-    // --- KILL SWITCH (force trail if not yet active) ---
-    if (elapsed >= SCALP_PHASE_KILL && !trailActive) {
-        trailActive = true;
-        trailHighWater = midPrice;
-        currentCallback = TRAIL_CALLBACK_KILL;
-        currentStopPrice = isLong ? midPrice * (1 - TRAIL_CALLBACK_KILL) : midPrice * (1 + TRAIL_CALLBACK_KILL);
-        logSignal('KILL SWITCH — FORCED TRAIL', [
-            `⏰ ${formatDuration(elapsed)} without trail. Suffocating with ${(TRAIL_CALLBACK_KILL * 100).toFixed(2)}% CB`,
-            `Stop: $${currentStopPrice.toFixed(2)}`
-        ]);
     }
 
     return false;
@@ -354,6 +364,17 @@ async function checkVWAPEntry(midPrice, spread) {
     // Cooldown check
     if (state.isCoolingDown(direction)) return false;
 
+    // --- ATR Volatility Hurdle ---
+    const currentATR = indicators.fastAtr || indicators.atr;
+    if (!currentATR) return false;
+    const atrHurdle = midPrice * 0.0015;
+    if (currentATR <= atrHurdle) {
+        console.log(`[${ts()}] [Consider] Touched VWAP, but volatility is too low. ATR $${currentATR.toFixed(2)} <= Hurdle $${atrHurdle.toFixed(2)}. Stand down.`);
+        return false;
+    }
+
+    console.log(`[${ts()}] [Consider] Touched VWAP. Volatility is sufficient ($${currentATR.toFixed(2)} > $${atrHurdle.toFixed(2)}). Checking order flow...`);
+
     // CVD spike detection
     const { spike, volume } = getCVDSpike(CVD_SPIKE_WINDOW_MS);
     const cvd60s = getCVD();
@@ -367,7 +388,12 @@ async function checkVWAPEntry(midPrice, spread) {
         ? spike > 0 && spikeRatio >= CVD_SPIKE_THRESHOLD
         : spike < 0 && spikeRatio >= CVD_SPIKE_THRESHOLD;
 
-    if (!spikeValid) return false;
+    if (!spikeValid) {
+        if (Math.abs(spikeRatio) >= 1.0) {
+            console.log(`[${ts()}] [Consider] Order flow spike detected, but invalid setup. Ratio: ${spikeRatio.toFixed(1)}x, Direction matches: ${spikeValid}. Stand down.`);
+        }
+        return false;
+    }
 
     // We have confluence: VWAP touch + directional CVD spike
     const cvdRatio = spikeRatio;
@@ -375,7 +401,12 @@ async function checkVWAPEntry(midPrice, spread) {
     // Momentum confirmation: is price physically moving in our direction during the CVD spike?
     const spikeDelta = getSpikeDelta(CVD_SPIKE_WINDOW_MS);
     const priceMovingAway = direction === 'LONG' ? spikeDelta > 0 : spikeDelta < 0;
-    if (!priceMovingAway) return false;
+    if (!priceMovingAway) {
+        console.log(`[${ts()}] [Consider] CVD spiked in direction (${direction}) but price momentum delta is adverse ($${spikeDelta.toFixed(2)}). Risking liquidity traps. Stand down.`);
+        return false;
+    }
+
+    console.log(`[${ts()}] [Consider] CONFLUENCE ACHIEVED: VWAP proximity + CVD Spike (${spikeRatio.toFixed(1)}x) + Price Momentum Confirmation ($${spikeDelta.toFixed(2)}). Sizing position...`);
 
     // Calculate position size (Dynamic ATR-based hard stop)
     const effectiveStopPct = indicators.atr ? (1.5 * indicators.atr) / midPrice : HARD_STOP_PCT;
@@ -391,6 +422,14 @@ async function checkVWAPEntry(midPrice, spread) {
 
     dynamicHardStop = hardStop;
 
+    // Calculate initial stop adjustment based on fast ATR
+    const fastAtr = indicators.fastAtr || indicators.atr || 30.0;
+    const relATR = fastAtr / midPrice;
+    const baselineRelATR = 0.0005; // 0.05%
+    let adjustedInitialStop = 0.0015 * (relATR / baselineRelATR);
+    // Clamp between 0.02% (0.0002) and 0.50% (0.0050)
+    adjustedInitialStop = Math.max(0.0002, Math.min(0.0050, adjustedInitialStop));
+
     logSignal(`ENTRY — VWAP ${direction === 'LONG' ? 'BOUNCE BUY' : 'REJECTION SELL'} (${direction})`, [
         `✓ VWAP: $${vwap.toFixed(2)} | Price: $${midPrice.toFixed(2)} | Dist: ${(vwapDist * 100).toFixed(3)}%`,
         `✓ CVD Spike: ${spike.toFixed(2)} BTC in ${CVD_SPIKE_WINDOW_MS / 1000}s | Ratio: ${spikeRatio.toFixed(1)}x baseline`,
@@ -399,8 +438,8 @@ async function checkVWAPEntry(midPrice, spread) {
         `✓ Macro: 1H ${macroTrend.trend} | 1D ${macroTrend.dailyTrend || 'N/A'} | Funding: ${fundingState.direction}`,
         `✓ Size: ${tradeSize} BTC ($${(tradeSize * midPrice).toFixed(0)} USDC)`,
         `Action: OPEN ${direction} ${tradeSize} BTC @ ~$${midPrice.toFixed(2)}`,
-        `Hard stop: $${hardStop.toFixed(2)} (${(effectiveStopPct * 100).toFixed(1)}%) | Trail at +${(TRAIL_ACTIVATION_PCT * 100).toFixed(1)}%`,
-        `Micro-Squeeze: 0-5m ${(TRAIL_CALLBACK_INIT * 100).toFixed(2)}% → 5-10m ${(TRAIL_CALLBACK_TIGHT * 100).toFixed(2)}% → 10m+ KILL ${(TRAIL_CALLBACK_KILL * 100).toFixed(2)}%`
+        `Hard stop: $${hardStop.toFixed(2)} (${(effectiveStopPct * 100).toFixed(1)}%)`,
+        `Dynamic Initial Stop: ${(adjustedInitialStop * 100).toFixed(4)}% (Time-Decay: M1 ${(adjustedInitialStop * 100).toFixed(3)}% → M10 0.020%)`
     ]);
 
     state.tradeReason = JSON.stringify({
@@ -415,10 +454,12 @@ async function checkVWAPEntry(midPrice, spread) {
     }
 
     state.targetExit = null; // No SMA target in V4 — purely trail-managed
-    currentStopPrice = hardStop;
-    trailActive = false;
-    trailHighWater = null;
-    currentCallback = TRAIL_CALLBACK_INIT;
+    trailActive = true;      // Active immediately
+    trailHighWater = midPrice;
+    currentCallback = adjustedInitialStop;
+    currentStopPrice = direction === 'LONG'
+        ? midPrice * (1 - adjustedInitialStop)
+        : midPrice * (1 + adjustedInitialStop);
     fundingOverride = false;
     return true;
 }
@@ -458,12 +499,20 @@ function logMarketScan(price, spread, position) {
         const isLong = position.size > 0;
         const side = isLong ? 'LONG' : 'SHORT';
         const uPnL = isLong ? (price - position.entryPrice) * position.size : (position.entryPrice - price) * Math.abs(position.size);
-        const holdTime = state.tradeOpenTime ? formatDuration(Date.now() - state.tradeOpenTime) : '?';
         const elapsed = state.tradeOpenTime ? Date.now() - state.tradeOpenTime : 0;
-        const phase = getScalpPhase(elapsed);
+        const holdTime = state.tradeOpenTime ? formatDuration(elapsed) : '?';
+        const initStop = currentCallback || 0.0015;
+        let cb = initStop;
+        if (elapsed > 600000) {
+            cb = 0.0002;
+        } else if (elapsed > 60000) {
+            const ratio = (elapsed - 60000) / (600000 - 60000);
+            cb = initStop - ratio * (initStop - 0.0002);
+            if (cb < 0.0002) cb = 0.0002;
+        }
 
         console.log(`         Position: ${side} ${Math.abs(position.size)} BTC @ $${position.entryPrice.toFixed(2)} | uPnL: $${uPnL.toFixed(2)} | Hold: ${holdTime}`);
-        console.log(`         Phase:    ${phase.name} | CB: ${(phase.callback * 100).toFixed(2)}%${fundingOverride ? ' [FUNDING]' : ''} | Stop: $${currentStopPrice?.toFixed(2) || 'N/A'} ${trailActive ? '(TRAIL)' : '(HARD)'}`);
+        console.log(`         Decay CB: ${(cb * 100).toFixed(4)}% | Cleared Fees: ${state.clearedFees ? 'YES' : 'NO'} | Stop: $${currentStopPrice?.toFixed(2) || 'N/A'}`);
     } else {
         console.log(`         Position: FLAT`);
         const lCD = state.isCoolingDown('LONG');
@@ -512,16 +561,18 @@ process.on('SIGTERM', handleShutdown);
 async function startBot() {
     console.log('');
     console.log('╔════════════════════════════════════════════════════════════════╗');
-    console.log('║     HYPERBOT V4.1 — THE ORDER FLOW SCALPER                    ║');
-    console.log('║   VWAP + CVD | Micro-Squeeze Exits                            ║');
+    console.log('║     HYPERBOT V5.01 — THE TIME-DECAY YIELD SCALPER              ║');
+    console.log('║   VWAP + CVD | Volatility Gating, Maker Exits & Log Decay      ║');
     console.log('║   ⚠  NO REAL ORDERS — READ-ONLY MARKET DATA  ⚠               ║');
     console.log('╚════════════════════════════════════════════════════════════════╝');
     console.log('');
     console.log(`[${ts()}] [BOOT] Balance: $${STARTING_BALANCE.toFixed(2)} USDC | Risk: ${(RISK_PER_TRADE_PCT * 100)}% | Leverage cap: ${MAX_LEVERAGE}x`);
     console.log(`[${ts()}] [BOOT] VWAP proximity: ${(VWAP_PROXIMITY_PCT * 100).toFixed(1)}% | CVD spike: ${CVD_SPIKE_THRESHOLD}x baseline`);
-    console.log(`[${ts()}] [BOOT] Hard stop: ${(HARD_STOP_PCT * 100).toFixed(1)}% | Trail at +${(TRAIL_ACTIVATION_PCT * 100).toFixed(1)}%`);
-    console.log(`[${ts()}] [BOOT] Micro-Squeeze: Init ${(TRAIL_CALLBACK_INIT * 100).toFixed(2)}% → Tight ${(TRAIL_CALLBACK_TIGHT * 100).toFixed(2)}% (5m) → Kill ${(TRAIL_CALLBACK_KILL * 100).toFixed(2)}% (10m)`);
-    console.log(`[${ts()}] [BOOT] Cooldown: ${COOLDOWN_MS / 60000}m | Equity floor: $${EQUITY_FLOOR} | Oracle: REMOVED (v4.1)`);
+    console.log(`[${ts()}] [BOOT] Volume filter: Min ${MIN_VOLUME_THRESHOLD} BTC / 60s | Volatility gate: ATR > 0.15% of Entry`);
+    console.log(`[${ts()}] [BOOT] Trailing Exits: Trailing Shadow Limits (Post-Only Maker structure rebate captured)`);
+    console.log(`[${ts()}] [BOOT] Momentum Snaps: Steep logarithmic decay curve triggered on adverse volume`);
+    console.log(`[${ts()}] [BOOT] Time limit: 15-minute Hard Kill Switch | Fee-adjusted break-even: 0.035% Taker fee`);
+    console.log(`[${ts()}] [BOOT] Cooldown: ${COOLDOWN_MS / 60000}m | Equity floor: $${EQUITY_FLOOR}`);
     console.log(`[${ts()}] [BOOT] Logging to: ${LOG_FILE}`);
     console.log('');
 
@@ -530,9 +581,15 @@ async function startBot() {
     if (data && data.closes) {
         indicators.sma200 = calculateSMA(data.closes, 200);
         indicators.atr = calculateATR(data.highs, data.lows, data.closes);
+        
+        const highs60 = data.highs.slice(-60);
+        const lows60 = data.lows.slice(-60);
+        const closes60 = data.closes.slice(-60);
+        indicators.fastAtr = calculateATR(highs60, lows60, closes60, 14);
+        
         indicators.rsi = calculateRSI(data.closes);
         indicators.lastRefresh = Date.now();
-        console.log(`[${ts()}] [REF] SMA200: $${indicators.sma200?.toFixed(2)} | RSI: ${indicators.rsi?.toFixed(1)} | ATR: $${indicators.atr?.toFixed(2)}`);
+        console.log(`[${ts()}] [REF] SMA200: $${indicators.sma200?.toFixed(2)} | RSI: ${indicators.rsi?.toFixed(1)} | ATR: $${indicators.atr?.toFixed(2)} | Fast ATR (1H): $${indicators.fastAtr?.toFixed(2)}`);
     }
 
     await refreshMacroTrend();
@@ -574,6 +631,15 @@ async function startBot() {
         // Update CVD baseline
         updateCVDBaseline();
 
+        // ═══ ACTIVE LIMIT EXIT ORDER CHECK ═══
+        if (engine.activeLimitOrder) {
+            const filled = engine.updateLimitExit(currentSnapshot);
+            if (filled) {
+                resetTradeState();
+            }
+            return; // Skip further checks while limit order is executing
+        }
+
         // ═══ CIRCUIT BREAKER ═══
         if (state.isHalted()) {
             if (state.killed) {
@@ -611,9 +677,11 @@ async function startBot() {
 
         // ═══ ENTRY ═══
         if (position.size === 0) {
-            checkVWAPEntry(midPrice, spread).catch(err => {
-                console.error(`[${ts()}] [Entry Error]:`, err.message);
-            });
+            if (hasMinVolume(MIN_VOLUME_THRESHOLD)) {
+                checkVWAPEntry(midPrice, spread).catch(err => {
+                    console.error(`[${ts()}] [Entry Error]:`, err.message);
+                });
+            }
         }
 
         // ═══ TRADE RECORDING ═══
@@ -632,6 +700,10 @@ async function startBot() {
                 ]);
             }
             lastTradeCount = state.completedTrades.length;
+            // Force reset/refresh indicators immediately post-trade
+            refreshIndicators().catch(err => {
+                console.error(`[Refresh Error Post-Trade]:`, err.message);
+            });
         }
 
         // ═══ SCAN ═══
@@ -642,7 +714,7 @@ async function startBot() {
         }
     });
 
-    console.log(`[${ts()}] [BOOT] V4.1 Order Flow Scalper initialized (Oracle removed). Ctrl+C for final report.`);
+    console.log(`[${ts()}] [BOOT] V5.01 Time-Decay Yield Scalper initialized. Ctrl+C for final report.`);
     console.log('');
 }
 

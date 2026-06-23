@@ -27,6 +27,15 @@ class PerformanceTracker {
     getWins() { return this.trades.filter(t => t.pnl > 0); }
     getLosses() { return this.trades.filter(t => t.pnl < 0); }
 
+    getExitMinuteStats() {
+        const stats = {};
+        this.trades.forEach(t => {
+            const min = t.exitMinute !== undefined ? t.exitMinute : Math.floor((t.durationMs || 0) / 60000);
+            stats[min] = (stats[min] || 0) + 1;
+        });
+        return stats;
+    }
+
     getWinRate() {
         if (this.trades.length === 0) return 0;
         return this.getWins().length / this.trades.length;
@@ -223,6 +232,14 @@ class PerformanceTracker {
         console.log(`│ Avg Win:  $${s.avgWin.toFixed(2).padEnd(12)} | Avg Loss: $${s.avgLoss.toFixed(2).padEnd(12)}    │`);
         console.log(`│ Best:     $${s.largestWin.toFixed(2).padEnd(12)} | Worst:    $${s.largestLoss.toFixed(2).padEnd(12)}    │`);
         console.log(`│ Total Fees Paid: $${s.totalFees.toFixed(4)}                                │`);
+        
+        const exitMinutes = this.getExitMinuteStats();
+        const distStr = Object.entries(exitMinutes)
+            .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
+            .map(([min, count]) => `M${min}:${count}`)
+            .join(', ');
+        console.log(`│ Exit Minutes: ${distStr.padEnd(46)} │`);
+        
         console.log(`├${border.repeat(62)}┤`);
         console.log(`│ Balance:       $${currentBalance.toFixed(2).padEnd(42)} │`);
         console.log(`│ Realized PnL:  ${s.totalPnL >= 0 ? '+' : ''}$${s.totalPnL.toFixed(2)} (${s.totalPnLPct >= 0 ? '+' : ''}${s.totalPnLPct.toFixed(2)}%)${' '.repeat(Math.max(0, 35 - s.totalPnL.toFixed(2).length))} │`);

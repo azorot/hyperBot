@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 class VirtualState {
-    constructor(initialBalance = 1000.0) {
+    constructor(initialBalance = 1000.0, ledgerFile = 'trade_ledger.jsonl', onPostTradeReset = null) {
         this.balance = initialBalance;
         this.initialBalance = initialBalance;
         this.dailyHighWaterMark = initialBalance;
@@ -17,7 +17,10 @@ class VirtualState {
         this.targetExit = null;
         this.tradeReason = null; // Set before executing a trade for "Why" tagging
         this.makerFee = 0.00015;
-        this.takerFee = 0.00045;
+        this.takerFee = 0.00035;
+        this.ledgerFile = ledgerFile;
+        this.onPostTradeReset = onPostTradeReset;
+        this.volMultiplier = null;
 
         // Round-trip trade tracking
         this.completedTrades = [];
@@ -29,6 +32,9 @@ class VirtualState {
         this.trailStop = null;      // Trailing stop price tracked externally
         this.cooldowns = { LONG: 0, SHORT: 0 }; // Timestamps when cooldown expires
         this.tradePhaseStart = null; // Alias for tradeOpenTime, used by Chrono-Squeeze
+        this.clearedFees = false;   // Track if trade mathematically cleared taker fees
+        this.reversalSnapped = false; // Momentum snap trigger
+        this.snapTime = null;         // Timestamp when momentum snapped
     }
 
     getBalance() {
@@ -82,6 +88,9 @@ class VirtualState {
             this._entryFees = fee;
             this._entryReason = this.tradeReason;
             this.tradeOpenTime = Date.now();
+            this.clearedFees = false;
+            this.reversalSnapped = false;
+            this.snapTime = null;
             this.position.size = sizeChange;
             this.position.entryPrice = executionPrice;
 
@@ -105,6 +114,7 @@ class VirtualState {
 
             if (this.position.size === 0) {
                 const totalFees = this._entryFees + fee;
+                const durationMs = Date.now() - this.tradeOpenTime;
                 this.completedTrades.push({
                     timestamp: new Date().toISOString(),
                     side: savedSide,
@@ -118,7 +128,9 @@ class VirtualState {
                     balanceAfter: this.balance,
                     entryReason: this._entryReason,
                     exitReason: this.tradeReason,
-                    durationMs: Date.now() - this.tradeOpenTime
+                    durationMs: durationMs,
+                    clearedFees: this.clearedFees,
+                    exitMinute: Math.floor(durationMs / 60000)
                 });
                 this.position.entryPrice = 0;
                 this._balanceAtEntry = 0;
@@ -126,9 +138,11 @@ class VirtualState {
                 this._entryReason = null;
                 this.tradeOpenTime = null;
                 this.trailStop = null;
+                this.postTradeReset();
 
             } else if (Math.sign(this.position.size) !== Math.sign(previousSize)) {
                 const totalFees = this._entryFees + fee;
+                const durationMs = Date.now() - this.tradeOpenTime;
                 this.completedTrades.push({
                     timestamp: new Date().toISOString(),
                     side: savedSide,
@@ -142,23 +156,31 @@ class VirtualState {
                     balanceAfter: this.balance,
                     entryReason: this._entryReason,
                     exitReason: this.tradeReason,
-                    durationMs: Date.now() - this.tradeOpenTime
+                    durationMs: durationMs,
+                    clearedFees: this.clearedFees,
+                    exitMinute: Math.floor(durationMs / 60000)
                 });
                 // Flipping: the new side starts fresh
                 this.tradeOpenTime = Date.now();
+                this.clearedFees = false;
+                this.reversalSnapped = false;
+                this.snapTime = null;
                 this.trailStop = null;
                 this.position.entryPrice = executionPrice;
                 this._balanceAtEntry = this.balance;
                 this._entryFees = 0;
                 this._entryReason = this.tradeReason;
+                this.postTradeReset();
             }
         }
 
         console.log(`[Ledger] ${sizeChange > 0 ? 'BUY' : 'SELL'} ${Math.abs(sizeChange)} BTC @ $${executionPrice.toFixed(2)} | Fee: $${fee.toFixed(4)} | PnL: $${pnl.toFixed(2)} | Balance: $${this.balance.toFixed(2)}`);
 
         // Persist to JSONL ledger with "Why" tag
+        const duration = this.tradeOpenTime ? (Date.now() - this.tradeOpenTime) : 0;
         const entry = {
             timestamp: new Date().toISOString(),
+            volMultiplier: this.volMultiplier || undefined,
             side: sizeChange > 0 ? 'BUY' : 'SELL',
             size: Math.abs(sizeChange),
             price: executionPrice,
@@ -167,12 +189,25 @@ class VirtualState {
             balance: this.balance,
             positionSize: this.position.size,
             positionEntry: this.position.entryPrice,
-            reason: this.tradeReason
+            reason: this.tradeReason,
+            clearedFees: this.clearedFees,
+            exitMinute: this.tradeOpenTime ? Math.floor(duration / 60000) : null
         };
-        fs.appendFileSync('trade_ledger.jsonl', JSON.stringify(entry) + '\n');
+        fs.appendFileSync(this.ledgerFile, JSON.stringify(entry) + '\n');
 
         // Reset reason after use
         this.tradeReason = null;
+    }
+
+    postTradeReset() {
+        console.log(`[State] Post-trade reset triggered. Balance: $${this.balance.toFixed(2)}`);
+        if (this.onPostTradeReset) {
+            this.onPostTradeReset();
+        } else {
+            // Flush feed trade buffer to prevent ghost volume entries
+            const { flushTradeBuffer } = require('./feed.js');
+            flushTradeBuffer();
+        }
     }
 }
 

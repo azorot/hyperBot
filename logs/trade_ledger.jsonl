@@ -13,7 +13,7 @@
 //no trades out of 4 hrs.. restructuring logic
 //v4sim
 //logic for logging trades was bugged
-//v5sim
+//4.1sim
 {"timestamp":"2026-06-18T20:07:22.448Z","side":"SELL","size":0.047,"price":63101,"fee":1.3345861499999998,"pnl":0,"balance":998.66541385,"positionSize":-0.047,"positionEntry":63101,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.0000061545171644365795,\"cvdSpike\":-1.90393,\"cvdRatio\":12.000000000000002,\"spread\":1,\"volume\":1.94727}}"}
 {"timestamp":"2026-06-18T20:18:17.871Z","side":"BUY","size":0.047,"price":63123,"fee":1.33505145,"pnl":-1.034,"balance":996.2963624,"positionSize":0,"positionEntry":0,"reason":"TRAIL_KILL_SWITCH"}
 {"timestamp":"2026-06-18T20:21:56.692Z","side":"SELL","size":0.047,"price":63106,"fee":1.3346919,"pnl":0,"balance":994.9616705,"positionSize":-0.047,"positionEntry":63106,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.00005679581332267073,\"cvdSpike\":-3.0976199999999987,\"cvdRatio\":3.835112046551943,\"spread\":1,\"volume\":3.221959999999998}}"}
@@ -36,3 +36,13 @@
 {"timestamp":"2026-06-19T00:37:17.886Z","side":"SELL","size":0.045,"price":62980,"fee":1.275345,"pnl":2.3909999999999125,"balance":964.0230747484987,"positionSize":0,"positionEntry":0,"reason":"TRAIL_KILL_SWITCH"}
 {"timestamp":"2026-06-19T00:55:29.260Z","side":"BUY","size":0.045,"price":62958.95022222222,"fee":1.2749187419999999,"pnl":0,"balance":962.7481560064988,"positionSize":0.045,"positionEntry":62958.95022222222,"reason":"{\"type\":\"VWAP_BOUNCE\",\"confluence\":{\"vwapDist\":0.0005592394101677543,\"cvdSpike\":15.322100000000008,\"cvdRatio\":13.12819297169586,\"spread\":1,\"volume\":16.49666000000001}}"}
 //all losing trades!! we need to work on the constraints and refining the strategy
+
+//v5sim
+{"timestamp":"2026-06-19T16:41:18.867Z","side":"SELL","size":0.047,"price":63247,"fee":1.04041315,"pnl":0,"balance":998.95958685,"positionSize":-0.047,"positionEntry":63247,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.00020920671983586133,\"cvdSpike\":-11.907760000000001,\"cvdRatio\":4.0713410799859036,\"spread\":1,\"volume\":11.96776}}","clearedFees":false,"exitMinute":0}
+{"timestamp":"2026-06-19T16:53:16.759Z","side":"SELL","size":0.047,"price":63059,"fee":1.03732055,"pnl":0,"balance":998.96267945,"positionSize":-0.047,"positionEntry":63059,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.0003643233384801198,\"cvdSpike\":-14.30735,\"cvdRatio\":37.51574917566745,\"spread\":8,\"volume\":14.308130000000002}}","clearedFees":false,"exitMinute":0}
+{"timestamp":"2026-06-19T16:56:41.884Z","side":"BUY","size":0.047,"price":62981,"fee":1.03603745,"pnl":3.666,"balance":1001.5926420000001,"positionSize":0,"positionEntry":0,"reason":"TRAIL_EXIT","clearedFees":true,"exitMinute":null}
+{"timestamp":"2026-06-19T16:58:14.590Z","side":"SELL","size":0.047,"price":62959,"fee":1.03567555,"pnl":0,"balance":1000.5569664500001,"positionSize":-0.047,"positionEntry":62959,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.00008269461102397984,\"cvdSpike\":-6.689909999999999,\"cvdRatio\":24.92600032912195,\"spread\":1,\"volume\":7.313229999999999}}","clearedFees":false,"exitMinute":0}
+{"timestamp":"2026-06-19T17:03:14.409Z","side":"BUY","size":0.047,"price":62968,"fee":1.0358236,"pnl":-0.423,"balance":999.0981428500002,"positionSize":0,"positionEntry":0,"reason":"TRAIL_EXIT","clearedFees":true,"exitMinute":null}
+{"timestamp":"2026-06-19T17:03:36.121Z","side":"SELL","size":0.047,"price":62912,"fee":1.0349024,"pnl":0,"balance":998.0632404500002,"positionSize":-0.047,"positionEntry":62912,"reason":"{\"type\":\"VWAP_REJECTION\",\"confluence\":{\"vwapDist\":-0.0007832658338375474,\"cvdSpike\":-7.877479999999995,\"cvdRatio\":24.649091790916252,\"spread\":1,\"volume\":8.038619999999995}}","clearedFees":false,"exitMinute":0}
+{"timestamp":"2026-06-19T17:06:32.361Z","side":"BUY","size":0.047,"price":62988,"fee":1.0361526,"pnl":-3.572,"balance":993.4550878500002,"positionSize":0,"positionEntry":0,"reason":"HARD_STOP","clearedFees":false,"exitMinute":null}
+//v5.01sim

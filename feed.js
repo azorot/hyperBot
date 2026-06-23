@@ -17,6 +17,7 @@ const macroTrend = {
 
 let tradeBuffer = [];
 const WINDOW_DURATION_MS = 60 * 1000; // 60-second rolling window
+const tradeListeners = [];
 
 const vwapState = {
     cumulativePV: 0,    // sum of price * volume
@@ -132,6 +133,7 @@ function startFeed(onTick) {
                 }
             }
 
+
             if (response.channel === 'trades' && response.data) {
                 const nowDay = new Date().getUTCDate();
                 if (nowDay !== vwapState.resetDay) {
@@ -146,11 +148,15 @@ function startFeed(onTick) {
                     const px = parseFloat(trade.px);
                     const sz = parseFloat(trade.sz);
 
-                    tradeBuffer.push({
+                    const tradeObj = {
                         size: sz,
                         side: trade.side,
                         time: trade.time,
                         price: px
+                    };
+                    tradeBuffer.push(tradeObj);
+                    tradeListeners.forEach(listener => {
+                        try { listener(tradeObj); } catch (e) { console.error('Error in trade listener:', e); }
                     });
 
                     vwapState.cumulativePV += px * sz;
@@ -305,4 +311,14 @@ async function refreshFunding() {
     }
 }
 
-module.exports = { startFeed, currentSnapshot, macroTrend, refreshMacroTrend, getVolumeMetrics, WINDOW_DURATION_MS, fundingState, fetchPredictedFunding, refreshFunding, vwapState, getVWAP, getCVD, getCVDSpike, getSpikeDelta };
+function hasMinVolume(minVol = 10.0) {
+    const { buyVolume, sellVolume } = getVolumeMetrics();
+    return (buyVolume + sellVolume) >= minVol;
+}
+
+function flushTradeBuffer() {
+    tradeBuffer = [];
+    console.log('[Feed] Trade buffer flushed to prevent ghost volume entries.');
+}
+
+module.exports = { startFeed, currentSnapshot, macroTrend, refreshMacroTrend, getVolumeMetrics, WINDOW_DURATION_MS, fundingState, fetchPredictedFunding, refreshFunding, vwapState, getVWAP, getCVD, getCVDSpike, getSpikeDelta, hasMinVolume, flushTradeBuffer, tradeListeners };
