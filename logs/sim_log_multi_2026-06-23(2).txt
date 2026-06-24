@@ -1,0 +1,276 @@
+[Data] Loaded 9756 candles from local cache file: historical_candles_1m.json
+[Data] Cache out of date. Syncing candles since 20:05:00...
+[Data] Synced 18 new candles from API.
+[Data] Saved 9773 candles to cache file: historical_candles_1m.json
+[Data] Fetching 200x 1h candles for BTC...
+[Data] Loaded 200 1h candles. Latest close: $62434
+[Data] Fetching 200x 1d candles for BTC...
+[Data] Loaded 200 1d candles. Latest close: $62434
+[Macro] 🔴 1H: BEARISH (Close: $62434.00 | SMA: $63681.70) | 1D: BEARISH
+[Funding] 📈 Rate: 0.000013 | Annualized: 10.95% | Direction: POSITIVE
+[Pipeline] Connected to Hyperliquid L1 (READ-ONLY). Subscribing to streams...
+[Pipeline] Initial book snapshot received. Feed is LIVE.
+
+[20:22:18] ─── MARKET SCAN (tick #1) ───────────────────────────
+         Price:    $62435.50  |  Spread: $1.00
+         VWAP:     $N/A  (?% ???)
+         CVD 60s:  +0.00 BTC  |  Spike 5s: +0.00 (0.0 vol)
+         Volume:   Buy 0.00 / Sell 0.00  |  S/B: 0.00
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: POSITIVE
+         Ref:      SMA200 $62371.26 | RSI 43.4 | ATR $22.57
+         ──────────────────────────────────────────────────────────
+         [0.0004] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0005] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0006] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0007] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0008] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0009] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0010] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+
+[Engine] Initiating Market SELL for 0.043 BTC...
+[Engine] Fill complete. Avg Price: $62443.95 | Slippage: $0.00 / BTC
+[State] Post-trade reset triggered. Balance: $825.41
+[Feed] [0.0010] Trade buffer flushed to prevent ghost volume entries.
+[Ledger] SELL 0.043 BTC @ $62443.95 | Fee: $0.9398 | PnL: $-124.11 | Balance: $825.41
+
+================================================================
+Backtest Complete. Processed 9000 candles, 237137 ticks.
+Final Performance:
+
+[Multiplier 0.0004]
+Balance: $947.94 | Trades: 10
+Win/Loss Ratio: W:3 / L:7 (WR: 30.0%) | Profit Factor: 0.12
+
+[Multiplier 0.0005]
+Balance: $947.94 | Trades: 10
+Win/Loss Ratio: W:3 / L:7 (WR: 30.0%) | Profit Factor: 0.12
+
+[Multiplier 0.0006]
+Balance: $947.94 | Trades: 10
+Win/Loss Ratio: W:3 / L:7 (WR: 30.0%) | Profit Factor: 0.12
+
+[Multiplier 0.0007]
+Balance: $947.94 | Trades: 10
+Win/Loss Ratio: W:3 / L:7 (WR: 30.0%) | Profit Factor: 0.12
+
+[Multiplier 0.0008]
+Balance: $949.64 | Trades: 9
+Win/Loss Ratio: W:3 / L:6 (WR: 33.3%) | Profit Factor: 0.13
+
+[Multiplier 0.0009]
+Balance: $947.87 | Trades: 9
+Win/Loss Ratio: W:2 / L:7 (WR: 22.2%) | Profit Factor: 0.05
+
+[Multiplier 0.0010]
+Balance: $825.41 | Trades: 9
+Win/Loss Ratio: W:2 / L:7 (WR: 22.2%) | Profit Factor: 0.01
+[0.0004] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $24.98. Stand down.
+[0.0005] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $31.22. Stand down.
+[0.0006] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $37.46. Stand down.
+[0.0007] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $43.71. Stand down.
+[0.0008] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $49.95. Stand down.
+[0.0009] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $56.20. Stand down.
+[0.0010] [20:22:24] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $62.44. Stand down.
+[Pipeline Debug] WS stall detected: 2921ms between messages. Timestamp: 1782246148458
+[0.0004] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $24.98. Stand down.
+[0.0005] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $31.22. Stand down.
+[0.0006] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $37.46. Stand down.
+[0.0007] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $43.71. Stand down.
+[0.0008] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $49.95. Stand down.
+[0.0009] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $56.20. Stand down.
+[0.0010] [20:22:29] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $62.44. Stand down.
+[Pipeline Debug] WS stall detected: 2251ms between messages. Timestamp: 1782246152962
+[0.0004] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $24.97. Stand down.
+[0.0005] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $31.22. Stand down.
+[0.0006] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $37.46. Stand down.
+[0.0007] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $43.70. Stand down.
+[0.0008] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $49.95. Stand down.
+[0.0009] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $56.19. Stand down.
+[0.0010] [20:22:34] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $62.44. Stand down.
+
+[20:22:34] ─── MARKET SCAN (tick #5) ───────────────────────────
+         Price:    $62435.50  |  Spread: $1.00
+         VWAP:     $62438.64  (-0.005% BELOW ↓)
+         CVD 60s:  -2.47 BTC  |  Spike 5s: -0.07 (0.1 vol)
+         Volume:   Buy 0.80 / Sell 3.27  |  S/B: 4.10
+         Macro:    🔴 1H: BEARISH | 1D: BEARISH | Funding: POSITIVE
+         Ref:      SMA200 $62371.26 | RSI 43.4 | ATR $22.57
+         ──────────────────────────────────────────────────────────
+         [0.0004] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0005] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0006] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0007] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0008] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0009] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         [0.0010] FLAT | Bal: $1000.00 | Trades: 0 (W:0 L:0)
+         ──────────────────────────────────────────────────────────
+[0.0004] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $24.97. Stand down.
+[0.0005] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $31.22. Stand down.
+[0.0006] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $37.46. Stand down.
+[0.0007] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $43.70. Stand down.
+[0.0008] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $49.95. Stand down.
+[0.0009] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $56.19. Stand down.
+[0.0010] [20:22:40] [Consider] Touched VWAP, but volatility is too low. ATR $22.57 <= Hurdle $62.44. Stand down.
+[Pipeline Debug] WS stall detected: 2718ms between messages. Timestamp: 1782246163615
+[0.0004] 
+[0.0004] ┌══════════════════════════════════════════════════════════════┐
+[0.0004] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0004] ├══════════════════════════════════════════════════════════════┤
+[0.0004] │ Runtime: 28s             | Ticks: 6                    │
+[0.0004] ├══════════════════════════════════════════════════════════════┤
+[0.0004] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0004] │ Win Rate:       N/A                                        │
+[0.0004] │ Profit Factor:  N/A                                        │
+[0.0004] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0004] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0004] ├══════════════════════════════════════════════════════════════┤
+[0.0004] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0004] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0004] │ Total Fees Paid: $0.0000                                │
+[0.0004] │ Exit Minutes:                                                │
+[0.0004] ├══════════════════════════════════════════════════════════════┤
+[0.0004] │ Balance:       $1000.00                                    │
+[0.0004] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0004] │ Unrealized:    $0.00                                       │
+[0.0004] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0004] └══════════════════════════════════════════════════════════════┘
+[0.0004] 
+[0.0005] 
+[0.0005] ┌══════════════════════════════════════════════════════════════┐
+[0.0005] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0005] ├══════════════════════════════════════════════════════════════┤
+[0.0005] │ Runtime: 28s             | Ticks: 6                    │
+[0.0005] ├══════════════════════════════════════════════════════════════┤
+[0.0005] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0005] │ Win Rate:       N/A                                        │
+[0.0005] │ Profit Factor:  N/A                                        │
+[0.0005] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0005] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0005] ├══════════════════════════════════════════════════════════════┤
+[0.0005] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0005] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0005] │ Total Fees Paid: $0.0000                                │
+[0.0005] │ Exit Minutes:                                                │
+[0.0005] ├══════════════════════════════════════════════════════════════┤
+[0.0005] │ Balance:       $1000.00                                    │
+[0.0005] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0005] │ Unrealized:    $0.00                                       │
+[0.0005] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0005] └══════════════════════════════════════════════════════════════┘
+[0.0005] 
+[0.0006] 
+[0.0006] ┌══════════════════════════════════════════════════════════════┐
+[0.0006] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0006] ├══════════════════════════════════════════════════════════════┤
+[0.0006] │ Runtime: 28s             | Ticks: 6                    │
+[0.0006] ├══════════════════════════════════════════════════════════════┤
+[0.0006] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0006] │ Win Rate:       N/A                                        │
+[0.0006] │ Profit Factor:  N/A                                        │
+[0.0006] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0006] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0006] ├══════════════════════════════════════════════════════════════┤
+[0.0006] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0006] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0006] │ Total Fees Paid: $0.0000                                │
+[0.0006] │ Exit Minutes:                                                │
+[0.0006] ├══════════════════════════════════════════════════════════════┤
+[0.0006] │ Balance:       $1000.00                                    │
+[0.0006] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0006] │ Unrealized:    $0.00                                       │
+[0.0006] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0006] └══════════════════════════════════════════════════════════════┘
+[0.0006] 
+[0.0007] 
+[0.0007] ┌══════════════════════════════════════════════════════════════┐
+[0.0007] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0007] ├══════════════════════════════════════════════════════════════┤
+[0.0007] │ Runtime: 28s             | Ticks: 6                    │
+[0.0007] ├══════════════════════════════════════════════════════════════┤
+[0.0007] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0007] │ Win Rate:       N/A                                        │
+[0.0007] │ Profit Factor:  N/A                                        │
+[0.0007] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0007] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0007] ├══════════════════════════════════════════════════════════════┤
+[0.0007] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0007] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0007] │ Total Fees Paid: $0.0000                                │
+[0.0007] │ Exit Minutes:                                                │
+[0.0007] ├══════════════════════════════════════════════════════════════┤
+[0.0007] │ Balance:       $1000.00                                    │
+[0.0007] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0007] │ Unrealized:    $0.00                                       │
+[0.0007] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0007] └══════════════════════════════════════════════════════════════┘
+[0.0007] 
+[0.0008] 
+[0.0008] ┌══════════════════════════════════════════════════════════════┐
+[0.0008] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0008] ├══════════════════════════════════════════════════════════════┤
+[0.0008] │ Runtime: 28s             | Ticks: 6                    │
+[0.0008] ├══════════════════════════════════════════════════════════════┤
+[0.0008] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0008] │ Win Rate:       N/A                                        │
+[0.0008] │ Profit Factor:  N/A                                        │
+[0.0008] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0008] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0008] ├══════════════════════════════════════════════════════════════┤
+[0.0008] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0008] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0008] │ Total Fees Paid: $0.0000                                │
+[0.0008] │ Exit Minutes:                                                │
+[0.0008] ├══════════════════════════════════════════════════════════════┤
+[0.0008] │ Balance:       $1000.00                                    │
+[0.0008] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0008] │ Unrealized:    $0.00                                       │
+[0.0008] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0008] └══════════════════════════════════════════════════════════════┘
+[0.0008] 
+[0.0009] 
+[0.0009] ┌══════════════════════════════════════════════════════════════┐
+[0.0009] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0009] ├══════════════════════════════════════════════════════════════┤
+[0.0009] │ Runtime: 28s             | Ticks: 6                    │
+[0.0009] ├══════════════════════════════════════════════════════════════┤
+[0.0009] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0009] │ Win Rate:       N/A                                        │
+[0.0009] │ Profit Factor:  N/A                                        │
+[0.0009] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0009] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0009] ├══════════════════════════════════════════════════════════════┤
+[0.0009] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0009] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0009] │ Total Fees Paid: $0.0000                                │
+[0.0009] │ Exit Minutes:                                                │
+[0.0009] ├══════════════════════════════════════════════════════════════┤
+[0.0009] │ Balance:       $1000.00                                    │
+[0.0009] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0009] │ Unrealized:    $0.00                                       │
+[0.0009] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0009] └══════════════════════════════════════════════════════════════┘
+[0.0009] 
+[0.0010] 
+[0.0010] ┌══════════════════════════════════════════════════════════════┐
+[0.0010] │ SIMULATION COMPLETE — FINAL REPORT                           │
+[0.0010] ├══════════════════════════════════════════════════════════════┤
+[0.0010] │ Runtime: 28s             | Ticks: 6                    │
+[0.0010] ├══════════════════════════════════════════════════════════════┤
+[0.0010] │ Trades: 0     | Wins: 0     | Losses: 0                  │
+[0.0010] │ Win Rate:       N/A                                        │
+[0.0010] │ Profit Factor:  N/A                                        │
+[0.0010] │ Sharpe Ratio:   N/A (need 2+ trades)                       │
+[0.0010] │ Sortino Ratio:  N/A (need 2+ trades)                       │
+[0.0010] ├══════════════════════════════════════════════════════════════┤
+[0.0010] │ Avg Win:  $0.00         | Avg Loss: $0.00            │
+[0.0010] │ Best:     $0.00         | Worst:    $0.00            │
+[0.0010] │ Total Fees Paid: $0.0000                                │
+[0.0010] │ Exit Minutes:                                                │
+[0.0010] ├══════════════════════════════════════════════════════════════┤
+[0.0010] │ Balance:       $1000.00                                    │
+[0.0010] │ Realized PnL:  +$0.00 (+0.00%)                                │
+[0.0010] │ Unrealized:    $0.00                                       │
+[0.0010] │ Max Drawdown:  $0.00 (0.00%)                                │
+[0.0010] └══════════════════════════════════════════════════════════════┘
+[0.0010] 

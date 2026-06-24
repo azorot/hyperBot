@@ -411,6 +411,21 @@ async function checkVWAPEntry(midPrice, spread) {
 
     console.log(`[${ts()}] [Consider] CONFLUENCE ACHIEVED: VWAP proximity + CVD Spike (${spikeRatio.toFixed(1)}x) + Price Momentum Confirmation ($${spikeDelta.toFixed(2)}). Sizing position...`);
 
+    // --- NEW MACRO TREND GATE ---
+    const isMacroBearish = macroTrend.h1 === 'BEARISH' || macroTrend.d1 === 'BEARISH';
+    const isMacroBullish = macroTrend.h1 === 'BULLISH' || macroTrend.d1 === 'BULLISH';
+
+    // BLOCK ENTRY IF TREND IS CONTRARIAN
+    const isLong = direction === 'LONG';
+    if (isLong && isMacroBearish) {
+        logSignal('ENTRY BLOCKED', ['Macro trend BEARISH. Ignoring Long signal.']);
+        return false; // Force kill the entry
+    }
+    if (!isLong && isMacroBullish) {
+        logSignal('ENTRY BLOCKED', ['Macro trend BULLISH. Ignoring Short signal.']);
+        return false; // Force kill the entry
+    }
+
     // Calculate position size (Dynamic ATR-based hard stop)
     const effectiveStopPct = indicators.atr ? (1.5 * indicators.atr) / midPrice : HARD_STOP_PCT;
     const tradeSize = calculatePositionSize(state.getBalance(), midPrice, effectiveStopPct);

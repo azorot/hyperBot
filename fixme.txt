@@ -1,0 +1,21 @@
+The Logic Patch
+You need to wrap your entry signal in a macro-trend filter. You should explicitly block the bot from taking any "long" position if the 1H/1D macro trend is bearish, regardless of how good the local CVD spike looks.
+
+Here is how you need to modify your entry trigger in multi_sim.js:
+
+
+// --- NEW MACRO TREND GATE ---
+const isMacroBearish = macroTrend.h1 === 'BEARISH' || macroTrend.d1 === 'BEARISH';
+const isMacroBullish = macroTrend.h1 === 'BULLISH' || macroTrend.d1 === 'BULLISH';
+
+// BLOCK ENTRY IF TREND IS CONTRARIAN
+if (isLong && isMacroBearish) {
+    this.logSignal('ENTRY BLOCKED', ['Macro trend BEARISH. Ignoring Long signal.']);
+    return false; // Force kill the entry
+}
+if (!isLong && isMacroBullish) {
+    this.logSignal('ENTRY BLOCKED', ['Macro trend BULLISH. Ignoring Short signal.']);
+    return false; // Force kill the entry
+}
+
+Integrate the Gate: Inject this logic block before the sizing calculation. If it returns false, the trade dies instantly.

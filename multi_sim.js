@@ -215,7 +215,7 @@ class StrategyInstance {
                 `Action: POST LIMIT EXIT @ spread`
             ]);
             this.state.tradeReason = 'TIMEOUT_15M';
-            this.engine.postLimitExit(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
+            this.engine.executeMarketOrder(isLong ? 'sell' : 'buy', Math.abs(position.size), currentSnapshot);
             return true;
         }
 
@@ -387,6 +387,21 @@ class StrategyInstance {
         }
 
         console.log(`[${ts()}] [Consider] CONFLUENCE ACHIEVED: VWAP proximity + CVD Spike (${spikeRatio.toFixed(1)}x) + Price Momentum Confirmation ($${spikeDelta.toFixed(2)}). Sizing position...`);
+
+        // --- NEW MACRO TREND GATE ---
+        const isMacroBearish = macroTrend.h1 === 'BEARISH' || macroTrend.d1 === 'BEARISH';
+        const isMacroBullish = macroTrend.h1 === 'BULLISH' || macroTrend.d1 === 'BULLISH';
+
+        // BLOCK ENTRY IF TREND IS CONTRARIAN
+        const isLong = direction === 'LONG';
+        if (isLong && isMacroBearish) {
+            this.logSignal('ENTRY BLOCKED', ['Macro trend BEARISH. Ignoring Long signal.']);
+            return false; // Force kill the entry
+        }
+        if (!isLong && isMacroBullish) {
+            this.logSignal('ENTRY BLOCKED', ['Macro trend BULLISH. Ignoring Short signal.']);
+            return false; // Force kill the entry
+        }
 
         const effectiveStopPct = indicators.atr ? (1.5 * indicators.atr) / midPrice : HARD_STOP_PCT;
         const tradeSize = this.calculatePositionSize(this.state.getBalance(), midPrice, effectiveStopPct);
@@ -569,7 +584,7 @@ async function refreshIndicators() {
     } catch (err) { console.error(`[${ts()}] [Refresh] Error:`, err.message); }
 }
 
-const multipliers = [0.0007, 0.0008, 0.0009, 0.0010];
+const multipliers = [0.0004, 0.0005, 0.0006, 0.0007, 0.0008, 0.0009, 0.0010];
 const simulations = multipliers.map(m => new StrategyInstance(m));
 
 // Pipe trades to each simulation
@@ -735,8 +750,8 @@ async function startMultiSim() {
     originalLog('╔════════════════════════════════════════════════════════════════╗');
     // originalLog('║     HYPERBOT V5.0.3 — MULTI-SIMULATOR RUNNER                    ║');
     originalLog('║     HYPERBOT V5.1 — MULTI-SIMULATOR RUNNER                      ║');
-    originalLog('║   v5.0.1Testing Volatility Multipliers: (0.0007, 0.0008, 0.0009,║');
-    originalLog('║                          0.0010)                                ║');
+    originalLog('║   Testing Volatility Multipliers: (0.0004, 0.0005, 0.0006,      ║');
+    originalLog('║                 0.0007, 0.0008, 0.0009, 0.0010)                 ║');
     originalLog('║           V5.0.3 Fixes: Kinetic Baseline & Wider Gates         ║');
     originalLog('╚════════════════════════════════════════════════════════════════╝');
     originalLog('');

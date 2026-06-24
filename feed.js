@@ -12,7 +12,9 @@ const macroTrend = {
     hourlySMA: null,
     trend: 'UNKNOWN', // 'BULLISH', 'BEARISH', or 'UNKNOWN'
     dailyTrend: 'UNKNOWN', // 'BULLISH', 'BEARISH', or 'UNKNOWN'
-    lastUpdate: null
+    lastUpdate: null,
+    get h1() { return this.trend; },
+    get d1() { return this.dailyTrend; }
 };
 
 let tradeBuffer = [];
@@ -96,6 +98,7 @@ function startFeed(onTick) {
 
     function connect() {
         const ws = new WebSocket('wss://api.hyperliquid.xyz/ws');
+        let pingInterval;
 
         ws.on('open', () => {
             console.log('[Pipeline] Connected to Hyperliquid L1 (READ-ONLY). Subscribing to streams...');
@@ -111,6 +114,14 @@ function startFeed(onTick) {
                 method: "subscribe",
                 subscription: { type: "trades", coin: "BTC" }
             }));
+
+            pingInterval = setInterval(() => {
+                if (ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({ method: "ping" }));
+                } else {
+                    clearInterval(pingInterval);
+                }
+            }, 15000);
         });
 
         ws.on('message', (data) => {
@@ -176,6 +187,7 @@ function startFeed(onTick) {
 
         ws.on('close', () => {
             if (watchdog) clearTimeout(watchdog);
+            if (pingInterval) clearInterval(pingInterval);
             console.log(`[Pipeline] Disconnected. Reconnecting in ${reconnectDelay / 1000}s...`);
             setTimeout(connect, reconnectDelay);
             reconnectDelay = Math.min(reconnectDelay * 2, MAX_DELAY);
